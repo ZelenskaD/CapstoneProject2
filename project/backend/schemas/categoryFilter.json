@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Category Filter",
+    "type": "object",
+    "properties": {
+    "categories": {
+        "type": "array",
+            "items": {
+            "type": "string"
+        }
+    }
+},
+    "additionalProperties": false
+}

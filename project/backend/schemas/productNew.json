@@ -1,0 +1,32 @@
+
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Product New",
+    "type": "object",
+    "properties": {
+    "name": {
+        "type": "string",
+            "minLength": 1
+    },
+    "brand": {
+        "type": "string",
+            "minLength": 1
+    },
+    "price": {
+        "type": "number",
+            "minimum": 0
+    },
+    "description": {
+        "type": "string"
+    },
+    "category_id": {
+        "type": "integer"
+    },
+    "image_link": {
+        "type": "string",
+            "format": "uri"
+    }
+},
+    "required": ["name", "brand", "price"],
+    "additionalProperties": false
+}

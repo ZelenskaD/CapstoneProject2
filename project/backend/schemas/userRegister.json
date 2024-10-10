@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "User Register",
+    "type": "object",
+    "properties": {
+    "username": {
+        "type": "string",
+            "minLength": 1
+    },
+    "password": {
+        "type": "string",
+            "minLength": 6
+    },
+    "email": {
+        "type": "string",
+            "format": "email"
+    },
+    "firstName": {
+        "type": "string",
+            "minLength": 1
+    },
+    "lastName": {
+        "type": "string",
+            "minLength": 1
+    },
+    "deliveryAddress": {
+        "type": "string",
+            "minLength": 1
+    }
+},
+    "required": ["username", "password", "email", "firstName", "lastName", "deliveryAddress"],
+    "additionalProperties": false
+}
