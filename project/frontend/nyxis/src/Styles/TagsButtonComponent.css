@@ -1,0 +1,97 @@
+/* General container for the tag buttons */
+.tags-carousel-container {
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 10px; /* General padding */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    scroll-behavior: smooth;
+    scrollbar-width: thin; /* Thin scrollbar for cleaner appearance */
+}
+
+/* The carousel container that holds the tag buttons */
+.tag-buttons-carousel {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure everything stays in a single row */
+    gap: 10px;
+    white-space: nowrap; /* Prevent wrapping */
+    padding-left: 20px; /* Add more padding at the start to prevent the first button from clipping */
+    padding-right: 20px; /* Add padding at the end too */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Styling for each tag button */
+.tag-btn-carousel {
+    display: inline-flex; /* Align image and text horizontally */
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-width: 100px; /* Adjust button width */
+    height: 40px; /* Adjust button height */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    gap: 8px;
+    white-space: nowrap; /* Prevent text wrapping */
+    flex-shrink: 0; /* Ensure buttons do not shrink */
+}
+
+/* Hover effect for each tag button */
+.tag-btn-carousel:hover {
+    background-color: #DB7093; /* Background color on hover */
+    transform: translateY(-2px); /* Subtle hover effect */
+}
+
+/* Styling for the tag images */
+.tag-image {
+    width: 20px; /* Small image size */
+    height: 20px;
+    object-fit: cover;
+    margin-right: 5px;
+}
+
+/* Styling for the tag text */
+.tag-text {
+    font-size: 0.75em;  /* Smaller font size */
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+/* Hide scrollbar on non-interactive devices */
+.tag-buttons-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.tag-buttons-carousel {
+    -ms-overflow-style: none;  /* Hide scrollbar on Internet Explorer */
+    scrollbar-width: none;  /* Hide scrollbar on Firefox */
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+    .tags-carousel-container {
+        padding: 10px; /* General padding to prevent clipping */
+    }
+
+    .tag-buttons-carousel {
+        padding-left: 15px; /* Add padding at the start to prevent clipping */
+        padding-right: 15px; /* Add padding at the end */
+    }
+
+    .tag-btn-carousel {
+        min-width: 80px; /* Smaller button size for mobile */
+        height: 36px; /* Adjust button height for mobile */
+    }
+}
+
+
+
+
+

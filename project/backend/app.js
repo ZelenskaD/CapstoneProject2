@@ -1,50 +1,43 @@
-"use strict";
-
-/** Express app for jobly. */
-
-const express = require("express");
-const cors = require("cors");
-
-const { NotFoundError } = require("./expressError");
-
-const { authenticateJWT } = require("./middleware/auth");
-const authRoutes = require("./routes/auth");
-// const companiesRoutes = require("./routes/companies");
-// const usersRoutes = require("./routes/users");
-// const jobsRoutes = require("./routes/jobs");
-
-const morgan = require("morgan");
-
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
 const app = express();
+const productsRoutes = require('./routes/products'); // Correctly reference the products route
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan("tiny"));
-app.use(authenticateJWT);
 
-app.use("/auth", authRoutes);
-// app.use("/companies", companiesRoutes);
-// app.use("/users", usersRoutes);
-// app.use("/jobs", jobsRoutes);
 
+// Proxy middleware to forward requests to the external API
+app.use('/api', createProxyMiddleware({
+    target: 'http://makeup-api.herokuapp.com',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api': '/api/v1/products.json', // Rewrite path for API
+    },
+}));
+
+// Default route
 app.get("/", (req, res) => {
     res.send("Welcome to Nyxis API!");
 });
 
-/** Handle 404 errors -- this matches everything */
-app.use(function (req, res, next) {
-    return next(new NotFoundError());
+app.get('/makeup', async (req, res) => {
+    try {
+        const response = await axios.get('http://makeup-api.herokuapp.com/api/v1/products.json');
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching products' });
+    }
 });
 
-/** Generic error handler; anything unhandled goes here. */
-app.use(function (err, req, res, next) {
-    if (process.env.NODE_ENV !== "test") console.error(err.stack);
-    const status = err.status || 500;
-    const message = err.message;
-
-    return res.status(status).json({
-        error: { message, status },
-    });
+// Handle 404 errors
+app.use(function (req, res, next) {
+    res.status(404).json({ error: { message: "Not Found", status: 404 } });
 });
 
 module.exports = app;
+
+

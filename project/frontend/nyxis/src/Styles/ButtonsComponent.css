@@ -1,0 +1,58 @@
+/* Container for both carousels */
+.carousels-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Individual carousel container */
+.carousel-wrapper {
+    width: 100%;
+    max-width: 1200px; /* Optional to limit max width on larger screens */
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Common styles for both carousels */
+.carousel {
+    display: flex;
+    overflow-x: auto; /* Allows horizontal scrolling */
+    white-space: nowrap; /* Prevents buttons from wrapping */
+    padding: 10px 0;
+    gap: 10px;
+}
+
+.carousel-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background-color: #DB7093;
+    color: black;
+}
+
+/* Mobile-specific carousel styling */
+@media (max-width: 768px) {
+    .carousel {
+        scroll-behavior: smooth; /* Adds smooth scrolling for mobile */
+        -webkit-overflow-scrolling: touch; /* Enables smooth scrolling on iOS */
+    }
+}
+
+

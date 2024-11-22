@@ -1,0 +1,50 @@
+
+
+.footer-container {
+    background-color: white; /* Dark background */
+    color: #fff; /* White text */
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.9em;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Space between items */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.footer-content p, .footer-content a {
+    display: inline-block;
+    margin: 0 10px; /* Add spacing between inline items */
+    color: #DB7093;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.footer-content p {
+    margin: 0;
+}
+
+.footer-content a:hover {
+    color: #fff; /* Change to white on hover */
+}
+
+.footer-content a {
+    color: #DB7093; /* Link color */
+}
+
+.footer-content .icon {
+    margin-left: 10px;
+    font-size: 1.5em;
+    color: #DB7093;
+}
+
+.footer-content .icon:hover {
+    color: #fff; /* Change to white on hover */
+}

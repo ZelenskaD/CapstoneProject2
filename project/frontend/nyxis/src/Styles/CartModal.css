@@ -1,0 +1,123 @@
+.cart-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 600px;
+    z-index: 1000;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.cart-modal h2 {
+    text-align: center;
+    margin-bottom: 10px;  /* Reduced margin */
+}
+
+.cart-items {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;  /* Added margin for spacing */
+}
+
+.item-image img {
+    width: 80px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.item-details {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.item-details p {
+    margin: 3px 0;  /* Reduce the space between name, brand, and price */
+}
+
+.item-quantity, .remove-item-btn {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.minus-btn, .plus-btn {
+    background-color: #DDA0DD;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 50%;
+}
+
+.remove-item-btn button {
+    background-color: lightpink;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.total-cart-price {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.checkout-btn, .cancel-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #7EC855;
+    color: white;
+    border: none;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.checkout-btn {
+    background-color: #4CAF50;
+}
+
+.cancel-btn {
+    background-color: #FF5A5F;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .cart-item {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-quantity, .remove-item-btn {
+        justify-content: flex-end;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .minus-btn, .plus-btn {
+        width: 25px;
+        height: 25px;
+    }
+}

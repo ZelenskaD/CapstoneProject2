@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Lipstick",
+    "brand": "Nyx",
+    "price": 12.99,
+    "tags": ["vegan"],
+    "image_link": "https://example.com/lipstick.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Foundation",
+    "brand": "Maybelline",
+    "price": 14.99,
+    "tags": ["organic"],
+    "image_link": "https://example.com/foundation.jpg"
+  }
+]

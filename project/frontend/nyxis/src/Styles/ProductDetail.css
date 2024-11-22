@@ -1,0 +1,178 @@
+/* Container for two-column layout */
+.product-detail-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(230, 230, 250, 0.7); /* Light lavender with transparency */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Column: Image and Tags */
+.product-image-tags {
+    flex: 1; /* Make the left column take up equal space */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the image and tags */
+}
+
+.product-image img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.product-tags {
+    text-align: center;
+}
+
+.product-tags ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.product-tags li {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Right Column: Product Information */
+.product-info {
+    flex: 1; /* Make the right column take up equal space */
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.product-info h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.product-info h2 {
+    font-size: 20px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.product-info p {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* Color Circles */
+.product-colors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    grid-auto-rows: 30px;
+    gap: 10px;
+    margin: 20px 0;
+    max-width: 400px;
+}
+
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.color-circle:hover {
+    transform: scale(1.1);
+}
+
+/* Quantity controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.quantity-btn {
+    background-color: #E6E6FA;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    justify-content: center;
+    align-items: center;
+}
+
+.quantity-btn:hover {
+    background-color: #DDA0DD;
+    border-color: #BA55D3;
+}
+
+.quantity-display {
+    font-weight: bold;
+}
+
+/* Add to cart button */
+.add-to-cart-btn {
+    background-color: #D8BFD8;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #BA55D3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .product-detail-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .product-info {
+        width: 100%;
+    }
+}
+
+/*.favorite-btn{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    right: 10px;*/
+/*    background-color: transparent;*/
+/*    border: none;*/
+/*    cursor: pointer;*/
+/*    font-size: 24px;*/
+/*    color: #BA55D3;*/
+/*    padding: 0;*/
+/*}*/
+
+
+
+

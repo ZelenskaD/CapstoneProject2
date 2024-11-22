@@ -1,0 +1,152 @@
+/* Remove default list-style (dots) */
+.nav-items {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nav-item {
+    display: inline-block; /* Inline-block for each nav item */
+    margin-left: 10px;
+}
+
+.nav-link {
+    padding: 10px;
+    font-size: 1.1em;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+/* Burger icon (hidden by default on larger screens) */
+.navbar-toggler {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: #333;
+}
+
+/* General navbar styles */
+.navbar-custom {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    border-bottom: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 2.5em;
+    color: #333;
+    font-family: "Shadows Into Light", cursive;
+}
+
+/* Default behavior for nav-items on desktop (larger screens) */
+@media (min-width: 769px) {
+    .nav-items {
+        display: inline-block; /* Always display inline-block on larger screens */
+    }
+
+    .navbar-toggler {
+        display: none; /* Hide the hamburger icon on larger screens */
+    }
+}
+
+/* On mobile screens (below 768px), hide the nav items by default */
+@media (max-width: 768px) {
+    .navbar-toggler {
+        display: block;
+    }
+
+    .nav-items {
+        display: none; /* Hide the nav items by default */
+    }
+
+    .nav-items.open {
+        display: flex;
+        flex-direction: column; /* Stack the nav items vertically */
+        position: absolute;
+        top: 50px; /* Adjust to your navbar height */
+        left: 0;
+        right: 0;
+        background-color: #f8f9fa;
+        padding: 10px;
+        z-index: 1000;
+    }
+
+    .nav-item {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+.cart-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.badge-circle {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ea90e9; /* Pink color for the badge */
+    color: white;
+    border-radius: 50%; /* Circular shape */
+    padding: 5px 10px; /* Adjust the padding to control the size */
+    font-size: 12px; /* Adjust the font size */
+    line-height: 1; /* Keep the text aligned inside */
+    min-width: 20px; /* Ensure the badge is circular */
+    text-align: center; /* Center the text inside */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional: Add a shadow for a better visual */
+}
+
+
+
+.search-bar {
+    display: none;
+}
+
+.search-bar.show {
+    display: block;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-submit-btn {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Ensure the search icon appears */
+.search-icon-wrapper {
+    cursor: pointer;
+    font-size: 1.5em;
+    padding: 10px;
+}
+

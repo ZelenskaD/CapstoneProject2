@@ -13,9 +13,12 @@ const PORT = +process.env.PORT || 3001;
 // Use dev database, testing database, or via env var, production database
 function getDatabaseUri() {
     return (process.env.NODE_ENV === "test")
-        ? "postgresql://localhost:5433/nyxis_test"
-        : process.env.DATABASE_URL || "postgresql://localhost:5433/nyxis";
+        ? "postgresql://localhost:5434/nyxis_test"
+        : process.env.DATABASE_URL || "postgresql://localhost:5434/nyxis";
+
 }
+console.log("Database URL from .env: ", process.env.DATABASE_URL);
+
 
 
 // Speed up bcrypt during tests, since the algorithm safety isn't being tested

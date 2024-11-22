@@ -1,0 +1,68 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.products-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* For mobile screens (below 768px), show only 1 card per row */
+@media (max-width: 768px) {
+    .product-card {
+        width: 100%; /* Full width for one card per row */
+    }
+}
+
+/* Center the cards when there are only 1 or 2 cards */
+.products-list:only-child,
+.products-list:has(> :nth-last-child(2)) {
+    justify-content: center;
+}
+
+/* General products list */
+.products-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px; /* Add spacing between cards */
+}
+
+.page-button {
+    background-color: #DDA0DD;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.page-button.active {
+    background-color: #DB7093;
+;
+    color: white;
+    border-color: #EE82EE;
+}
+
+.page-button:hover {
+    background-color: #FFC0CB;
+}
+
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full screen height */
+}
+
+.loading-gif {
+    width: 100px;
+    height: 100px;
+}
+
+
+
+
+

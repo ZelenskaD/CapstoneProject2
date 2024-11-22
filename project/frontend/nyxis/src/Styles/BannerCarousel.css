@@ -1,0 +1,49 @@
+/* Banner container styling */
+.banner-carousel {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Banner image styling */
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Dots container */
+.carousel-dots {
+    position: absolute;
+    bottom: 20px; /* Position the dots at the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px; /* Add spacing between dots */
+}
+
+/* Individual dot styling */
+.dot {
+    height: 12px;
+    width: 12px;
+    background-color: rgba(255, 255, 255, 0.5); /* Default dot color */
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Active dot (current image) */
+.dot.active {
+    background-color: rgba(255, 255, 255, 1); /* Highlight active dot */
+}
+
+.dot:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Change color on hover */
+}

@@ -1,0 +1,25 @@
+/* General carousel container */
+.carousel-slider {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.carousel-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    width: 100%; /* Ensures button takes up full width */
+}
+
+.carousel-btn:hover {
+    background-color: #DB7093;
+    color: black;
+}
