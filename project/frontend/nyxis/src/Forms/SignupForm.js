@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import "../Styles/Forms.css"
+import "../Styles/Forms.css"; // Shared CSS file for Login and Signup
 
 function SignupForm({ signup }) {
     const [formData, setFormData] = useState({
@@ -12,14 +12,13 @@ function SignupForm({ signup }) {
         deliveryAddress: "",
     });
     const [formErrors, setFormErrors] = useState([]);
-
-    const navigate = useNavigate(); // You need to initialize navigate here
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(f => ({
+        setFormData((f) => ({
             ...f,
-            [name]: value
+            [name]: value,
         }));
     };
 
@@ -33,7 +32,7 @@ function SignupForm({ signup }) {
         }
 
         try {
-            let result = await signup(formData);  // Call signup function passed as prop
+            let result = await signup(formData); // Call signup function
             if (result.success) {
                 navigate("/");
             } else {
@@ -45,82 +44,94 @@ function SignupForm({ signup }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Username:</label>
-                <input
-                    name="username"
-                    type="text"
-                    value={formData.username}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Password:</label>
-                <input
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>First Name:</label>
-                <input
-                    name="firstName"
-                    type="text"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Last Name:</label>
-                <input
-                    name="lastName"
-                    type="text"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Email:</label>
-                <input
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Delivery Address: </label>
-                <input
-                    name="deliveryAddress"
-                    type="text"
-                    value={formData.deliveryAddress}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-
-            {/* Display error messages */}
-            {formErrors.length > 0 && (
-                <div>
-                    <h4>Errors:</h4>
-                    <ul>
-                        {formErrors.map(error => (
-                            <li key={error}>{error}</li>
-                        ))}
-                    </ul>
+        <div className="login-container"> {/* Reusing the container class */}
+            <form className="login-form" onSubmit={handleSubmit}> {/* Reusing the login-form class */}
+                <h3 className="form-title">Sign Up</h3>
+                <div className="form-group">
+                    <label className="form-label">Username:</label>
+                    <input
+                        className="form-input"
+                        name="username"
+                        type="text"
+                        value={formData.username}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-            )}
+                <div className="form-group">
+                    <label className="form-label">Password:</label>
+                    <input
+                        className="form-input"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">First Name:</label>
+                    <input
+                        className="form-input"
+                        name="firstName"
+                        type="text"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Last Name:</label>
+                    <input
+                        className="form-input"
+                        name="lastName"
+                        type="text"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Email:</label>
+                    <input
+                        className="form-input"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Delivery Address:</label>
+                    <input
+                        className="form-input"
+                        name="deliveryAddress"
+                        type="text"
+                        value={formData.deliveryAddress}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-            <button type="submit">Sign Up</button>
-        </form>
+                {formErrors.length > 0 && (
+                    <div className="form-error-box">
+                        <h4 className="form-error-title">Errors:</h4>
+                        <ul className="form-error-list">
+                            {formErrors.map((error) => (
+                                <li key={error} className="form-error-item">
+                                    {error}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                <button type="submit" className="form-button">
+                    Sign Up
+                </button>
+            </form>
+        </div>
     );
 }
 

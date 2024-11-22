@@ -4,8 +4,8 @@
     "type": "object",
     "properties": {
     "username": {
-        "type": "string",
-            "minLength": 1
+        "type": "string"
+
     },
     "password": {
         "type": "string",

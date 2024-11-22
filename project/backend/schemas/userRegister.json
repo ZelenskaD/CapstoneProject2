@@ -28,6 +28,6 @@
             "minLength": 1
     }
 },
-    "required": ["username", "password", "email", "firstName", "lastName", "deliveryAddress"],
+    "required": ["username", "password", "email", "firstName", "lastName"],
     "additionalProperties": false
 }

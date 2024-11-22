@@ -24,7 +24,7 @@ class NyxisApi {
         const params = (method === "get") ? data : {};
 
         try {
-            return (await axios({ url, method, data, params, headers })).data;
+            return (await axios({ url, method, data, params, headers, timeout: 5000 })).data;
         } catch (err) {
             console.error("API Error:", err.response);
             let message = err.response?.data?.error?.message || "Unknown error occurred";
@@ -162,8 +162,12 @@ class NyxisApi {
 
     /** Login a user and get a token. */
     static async login(loginData) {
+        console.log("Login request data:", loginData); // Log data before request
+
         try {
             const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
+            console.log("Login response token:", res.data.token); // Log the response token
+
             return res.data.token;
         } catch (err) {
             console.error("Login Error:", err.message);
