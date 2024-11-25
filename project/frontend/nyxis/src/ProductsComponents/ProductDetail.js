@@ -76,8 +76,14 @@ const ProductDetail = ({ addToCart, toggleFavorite, favorites }) => {
     return (
         <div className="product-detail-container">
             <div className="product-image-tags">
+
+
                 <div className="product-image">
-                    <img src={product.image_link} alt={product.name} />
+                    <img src={product.image_link} alt={product.name}/>
+
+                    <button className="favorite-btn" onClick={handleToggleFavorite}>
+                        <FontAwesomeIcon icon={cracking ? faHeartCrack : (isFavorite ? faSolidHeart : faRegularHeart)}/>
+                    </button>
                 </div>
                 {product.tag_list && product.tag_list.length > 0 && (
                     <div className="product-tags">
@@ -110,19 +116,11 @@ const ProductDetail = ({ addToCart, toggleFavorite, favorites }) => {
                     </div>
                 )}
 
-                <div className="quantity-controls">
-                    <button onClick={decreaseQuantity} className="quantity-btn">-</button>
-                    <span className="quantity-display">{quantity}</span>
-                    <button onClick={increaseQuantity} className="quantity-btn">+</button>
-                </div>
 
                 <button className="add-to-cart-btn" onClick={handleAddToCart}>
                     Add to Cart
                 </button>
 
-                <button className="favorite-btn" onClick={handleToggleFavorite}>
-                    <FontAwesomeIcon icon={cracking ? faHeartCrack : (isFavorite ? faSolidHeart : faRegularHeart)} />
-                </button>
 
             </div>
         </div>

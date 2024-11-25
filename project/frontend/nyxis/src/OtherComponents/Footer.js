@@ -11,18 +11,20 @@ const Footer = () => {
                 <p>Built by: Surganov.dev</p>
                 <p>Contact Us: <a href="mailto:zelya2909@gmail.com"> zelya2909@gmail.com </a></p>
 
-                <a href="https://www.linkedin.com/in/daria-surganov" target="_blank" rel="noopener noreferrer">
-                    <FontAwesomeIcon icon={faLinkedin} className="icon" />
-                </a>
-
-                <a href="https://www.instagram.com/_zelenska_ya_" target="_blank" rel="noopener noreferrer">
-                    <FontAwesomeIcon icon={faInstagram} className="icon" />
-                </a>
+                <div className="social-icons">
+                    <a href="https://www.linkedin.com/in/daria-surganov" target="_blank" rel="noopener noreferrer">
+                        <FontAwesomeIcon icon={faLinkedin} className="icon" />
+                    </a>
+                    <a href="https://www.instagram.com/_zelenska_ya_" target="_blank" rel="noopener noreferrer">
+                        <FontAwesomeIcon icon={faInstagram} className="icon" />
+                    </a>
+                </div>
             </div>
         </footer>
     );
 };
 
 export default Footer;
+
 
 

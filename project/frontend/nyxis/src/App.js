@@ -85,18 +85,20 @@ function App() {
     localStorage.removeItem("currentUser");
   }
 
-  // Define the signup function
   async function signup(signupData) {
     try {
-      const token = await NyxisApi.signup(signupData);
-      setToken(token);
-      localStorage.setItem("nyxis-token", token);
-      return { success: true };
-    } catch (errors) {
-      console.error("Signup failed", errors);
-      return { success: false, errors };
+      const result = await NyxisApi.signup(signupData);
+      if (result.success) {
+        setToken(result.token);
+        localStorage.setItem("nyxis-token", result.token); // Save token to localStorage
+        return { success: true };
+      }
+    } catch (err) {
+      console.error("Signup failed", err);
+      return { success: false, errors: err };
     }
   }
+
 
 
   // Define the login function
@@ -142,34 +144,30 @@ function App() {
             <NavBar logout={logout} cart={cart} toggleCartOpen={toggleCartOpen} onSearch={handleSearch} />
             {cartOpen && <CartModal cart={cart} setCart={setCart} toggleCartOpen={toggleCartOpen} />}
             <BannerCarousel />
-            {/*<ButtonsComponent />*/}
             <TagsButtonComponent />
             <div className="app-container">
-              <div className="main-content">
-                <main>
-                  <Routes>
-                    <Route path="/" element={<Homepage />} />
-                    <Route path="/signup" element={<SignupForm signup={signup} />} />
-                    <Route path="/login" element={<LoginForm login={login} />} />
-                    <Route path="/makeup" element={<ProductsList favorites={favorites} toggleFavorite={toggleFavorite}
-                                                                 isFavorite={false} addToCart={addToCart} searchTerm={searchTerm} />} />
-                    <Route path="/makeup/tag/:tag" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="tag" />} />
-                    <Route path="/makeup/product_type/:product_type" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="product_type" />} />
-                    <Route path="makeup/brands/:brand" element={<FilteredProducts  favorites={favorites} toggleFavorite={toggleFavorite} addToCart={addToCart} isFavorite={false} filterType="brand" />} />
-                    <Route path="/cart" element={<Shop cart={cart} setCart={setCart} favorites={favorites} toggleFavorite={toggleFavorite}/>} />
-                    <Route path="/products/:productId" element={<ProductDetail favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} />} />
-                    <Route path="/favorites" element={<FavoritesPage favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={true} addToCart={addToCart} />} />
-
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </div>
+              <main className="main-content">
+                <Routes>
+                  <Route path="/" element={<Homepage />} />
+                  <Route path="/signup" element={<SignupForm signup={signup} />} />
+                  <Route path="/login" element={<LoginForm login={login} />} />
+                  <Route path="/makeup" element={<ProductsList favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} searchTerm={searchTerm} />} />
+                  <Route path="/makeup/tag/:tag" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="tag" />} />
+                  <Route path="/makeup/product_type/:product_type" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="product_type" />} />
+                  <Route path="makeup/brands/:brand" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} addToCart={addToCart} isFavorite={false} filterType="brand" />} />
+                  <Route path="/cart" element={<Shop cart={cart} setCart={setCart} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+                  <Route path="/products/:productId" element={<ProductDetail favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} />} />
+                  <Route path="/favorites" element={<FavoritesPage favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={true} addToCart={addToCart} />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
             </div>
           </UserContext.Provider>
           <Footer />
         </BrowserRouter>
       </div>
   );
+
 }
 
 export default App;

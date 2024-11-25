@@ -20,19 +20,29 @@ class NyxisApi {
     static async request(endpoint, data = {}, method = "get") {
         console.debug("API Call:", endpoint, data, method);
 
-        // Authorization token passed in the headers
         const url = `${BASE_URL}/${endpoint}`;
         const headers = { Authorization: `Bearer ${NyxisApi.token}` };
-        const params = (method === "get") ? data : {};
+        const params = method === "get" ? data : {};
 
         try {
-            return (await axios({ url, method, data, params, headers })).data;
+            return (
+                await axios({
+                    url,
+                    method,
+                    data,
+                    params,
+                    headers,
+                    timeout: 20000, // Increase timeout to 20 seconds
+                })
+            ).data;
         } catch (err) {
-            console.error("API Error:", err.response);
-            let message = err.response?.data?.error?.message || "Unknown error occurred";
+            console.error("API Error:", err.response || err.message);
+            let message =
+                err.response?.data?.error?.message || "Unknown error occurred";
             throw Array.isArray(message) ? message : [message];
         }
     }
+
 
 
 
@@ -147,11 +157,22 @@ class NyxisApi {
     }
 
 
+    static async signup(signupData) {
+        try {
+            const res = await axios.post(`${BASE_URL}/auth/register`, signupData, {
+                headers: { "Content-Type": "application/json" },
+            });
+            return { success: true, token: res.data.token };
+        } catch (err) {
+            console.error("Signup Error:", err.response || err.message);
+            return { success: false, errors: err.response?.data?.error?.message || ["Unexpected error"] };
+        }
+    }
+
+
     static async login(loginData) {
-        console.log("Login data:", loginData); // Log data being sent
         try {
             const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
-            console.log("Received token:", res.data.token); // Log token
             return res.data.token;
         } catch (err) {
             console.error("Login Error:", err.response || err.message);
@@ -159,26 +180,7 @@ class NyxisApi {
         }
     }
 
-    static async signup(signupData) {
-        console.log("Signup request payload:", signupData); // Log payload
-        try {
-            const res = await axios.post(`${BASE_URL}/auth/register`, signupData, {
-                headers: { "Content-Type": "application/json" },
-                timeout: 10000, // Ensure enough timeout
-            });
 
-
-            console.log("Received token:", res.data.token); // Log token
-            return res.data.token;
-        } catch (err) {
-            if (err.response) {
-                console.error("Signup failed with server error:", err.response.data);
-            } else {
-                console.error("Signup failed with network error:", err.message);
-            }
-            throw err;
-        }
-    }
 
 
     /** Get the current user details by username. */

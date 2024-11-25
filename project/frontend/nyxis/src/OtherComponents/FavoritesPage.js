@@ -1,12 +1,11 @@
 import React from 'react';
 import ProductCard from '../ProductsComponents/ProductCard';
+import "../Styles/FavoritesPage.css"
 
 const FavoritesPage = ({ favorites, toggleFavorite, addToCart }) => {
     if (favorites.length === 0) {
         return <p>You have no favorite products.</p>;
     }
-
-
 
     return (
         <div className="favorites-list">
@@ -16,7 +15,8 @@ const FavoritesPage = ({ favorites, toggleFavorite, addToCart }) => {
                     product={product}
                     addToCart={addToCart}
                     toggleFavorite={toggleFavorite}
-                    isFavorite={true} // All products here are favorites
+                    isFavorite={true}
+                    favoritePage={true} // Explicitly set the prop
                 />
             ))}
         </div>
@@ -24,3 +24,6 @@ const FavoritesPage = ({ favorites, toggleFavorite, addToCart }) => {
 };
 
 export default FavoritesPage;
+
+
+

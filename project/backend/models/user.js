@@ -49,52 +49,35 @@ class User {
      * Throws BadRequestError on duplicates.
      **/
 
-    static async register(
-        {username, firstName, lastName, password, email, deliveryAddress}) {
+    static async register({ username, firstName, lastName, password, email, deliveryAddress }) {
+        console.time("Duplicate Check");
         const duplicateCheck = await db.query(
-            `SELECT username
-           FROM users
-           WHERE username = $1`,
-            [username],
+            `SELECT username FROM users WHERE username = $1`,
+            [username]
         );
+        console.timeEnd("Duplicate Check");
 
         if (duplicateCheck.rows[0]) {
             throw new BadRequestError(`Duplicate username: ${username}`);
         }
 
+        console.time("Password Hashing");
         const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+        console.timeEnd("Password Hashing");
 
+        console.time("Database Insert");
         const result = await db.query(
             `INSERT INTO users
-           (username,
-            password,
-            first_name,
-            last_name,
-            email,
-            delivery_address,
-            is_admin)
+           (username, password, first_name, last_name, email, delivery_address, is_admin)
            VALUES ($1, $2, $3, $4, $5, $6, $7)
-           RETURNING username,
-            first_name AS "firstName",
-             last_name AS "lastName", 
-             email, 
-             delivery_address AS "deliveryAddress", 
-             is_admin AS "isAdmin"`,
-            [
-                username,
-                hashedPassword,
-                firstName,
-                lastName,
-                email,
-                deliveryAddress,
-                false,
-            ],
+           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
+            [username, hashedPassword, firstName, lastName, email, deliveryAddress, false]
         );
+        console.timeEnd("Database Insert");
 
-        const user = result.rows[0];
-
-        return user;
+        return result.rows[0];
     }
+
 
 
     // Update user information, including preferences and delivery address

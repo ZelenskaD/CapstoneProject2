@@ -142,3 +142,54 @@
     }
 }
 
+.favorite-card {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.favorite-image {
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.favorite-info {
+    flex: 1;
+}
+
+.favorite-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.favorite-brand {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.favorite-price {
+    font-size: 1rem;
+    color: #333;
+    margin: 10px 0;
+}
+
+.favorite-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.remove-favorite-btn {
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 1.2rem;
+    cursor: pointer;
+}

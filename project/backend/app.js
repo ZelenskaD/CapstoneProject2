@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express.json());
 app.use(authenticateJWT);
 
-app.use("/auth", authRoutes);
-app.use("/users", usersRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
 
 
 

@@ -11,62 +11,48 @@ function SignupForm({ signup }) {
         email: "",
         deliveryAddress: "",
     });
-    const [formErrors, setFormErrors] = useState([]);
+    const [formErrors, setFormErrors] = useState([]); // Array to store any form or server errors
     const navigate = useNavigate();
 
+    /** Updates form data field */
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((f) => ({
-            ...f,
+        setFormData((data) => ({
+            ...data,
             [name]: value,
         }));
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //
-    //     // Password length validation
-    //     if (formData.password.length < 5) {
-    //         setFormErrors(["Password must be at least 5 characters long"]);
-    //         return;
-    //     }
-    //
-    //     try {
-    //         let result = await signup(formData); // Call signup function
-    //         if (result.success) {
-    //             navigate("/");
-    //         } else {
-    //             setFormErrors(result.errors);
-    //         }
-    //     } catch (err) {
-    //         console.error("Error during signup:", err);
-    //     }
-    // };
-
-
+    /** Handles form submission */
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.username || !formData.password || formData.password.length < 5) {
-            setFormErrors(["All fields are required, and the password must be at least 5 characters long"]);
+
+        // Validate password length before submission
+        if (formData.password.length < 5) {
+            setFormErrors(["Password must be at least 5 characters long"]);
             return;
         }
+
         try {
-            let result = await signup(formData);
+            // Call the signup function passed as a prop
+            const result = await signup(formData);
             if (result.success) {
-                navigate("/");
+                navigate("/"); // Redirect to home page on successful signup
             } else {
-                setFormErrors(result.errors);
+                setFormErrors(result.errors || ["Signup failed"]);
             }
         } catch (err) {
+            console.error("Error during signup:", err);
             setFormErrors(["An unexpected error occurred. Please try again."]);
         }
     };
 
-
     return (
-        <div className="login-container"> {/* Reusing the container class */}
-            <form className="login-form" onSubmit={handleSubmit}> {/* Reusing the login-form class */}
+        <div className="form-container"> {/* Reusing shared container class */}
+            <form className="form" onSubmit={handleSubmit}> {/* Reusing shared form class */}
                 <h3 className="form-title">Sign Up</h3>
+
+                {/* Username */}
                 <div className="form-group">
                     <label className="form-label">Username:</label>
                     <input
@@ -78,6 +64,8 @@ function SignupForm({ signup }) {
                         required
                     />
                 </div>
+
+                {/* Password */}
                 <div className="form-group">
                     <label className="form-label">Password:</label>
                     <input
@@ -89,6 +77,8 @@ function SignupForm({ signup }) {
                         required
                     />
                 </div>
+
+                {/* First Name */}
                 <div className="form-group">
                     <label className="form-label">First Name:</label>
                     <input
@@ -100,6 +90,8 @@ function SignupForm({ signup }) {
                         required
                     />
                 </div>
+
+                {/* Last Name */}
                 <div className="form-group">
                     <label className="form-label">Last Name:</label>
                     <input
@@ -111,6 +103,8 @@ function SignupForm({ signup }) {
                         required
                     />
                 </div>
+
+                {/* Email */}
                 <div className="form-group">
                     <label className="form-label">Email:</label>
                     <input
@@ -122,6 +116,8 @@ function SignupForm({ signup }) {
                         required
                     />
                 </div>
+
+                {/* Delivery Address */}
                 <div className="form-group">
                     <label className="form-label">Delivery Address:</label>
                     <input
@@ -134,12 +130,13 @@ function SignupForm({ signup }) {
                     />
                 </div>
 
+                {/* Display form errors */}
                 {formErrors.length > 0 && (
                     <div className="form-error-box">
                         <h4 className="form-error-title">Errors:</h4>
                         <ul className="form-error-list">
-                            {formErrors.map((error) => (
-                                <li key={error} className="form-error-item">
+                            {formErrors.map((error, idx) => (
+                                <li key={idx} className="form-error-item">
                                     {error}
                                 </li>
                             ))}
@@ -147,6 +144,7 @@ function SignupForm({ signup }) {
                     </div>
                 )}
 
+                {/* Submit Button */}
                 <button type="submit" className="form-button">
                     Sign Up
                 </button>

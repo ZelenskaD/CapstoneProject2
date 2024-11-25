@@ -1,50 +1,70 @@
-
-
 .footer-container {
-    background-color: white; /* Dark background */
-    color: #fff; /* White text */
-    padding: 20px;
-    text-align: center;
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
-    font-size: 0.9em;
+    background: linear-gradient(
+            45deg,
+            rgba(255, 228, 225, 0.8), /* Light pink */
+            rgba(245, 222, 230, 0.8), /* Rosy nude */
+            rgba(230, 230, 250, 0.8), /* Lavender */
+            rgba(255, 239, 246, 0.8), /* Blush pink */
+            rgba(248, 240, 255, 0.8)  /* Soft pastel purple */
+    );
+    background-size: 200% 200%;
+    animation: footerGradientMove 10s ease infinite;
+    color: #333; /* Darker text for contrast */
+    padding: 10px 20px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    font-family: 'Roboto', 'Open Sans', sans-serif; /* Use your selected fonts */
+
+}
+
+/* Animation for the footer gradient */
+@keyframes footerGradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .footer-content {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 15px; /* Space between items */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: space-between;
+    width: 100%;
 }
 
-.footer-content p, .footer-content a {
-    display: inline-block;
-    margin: 0 10px; /* Add spacing between inline items */
-    color: #DB7093;
+.footer-content p,
+.footer-content a {
+    margin: 0 10px;
+    font-size: 14px;
     text-decoration: none;
-    font-size: 1em;
-}
+    color: #333; /* Adjust text color for better readability */
 
-.footer-content p {
-    margin: 0;
 }
 
 .footer-content a:hover {
-    color: #fff; /* Change to white on hover */
+    color: #9b59b6; /* Lavender hover effect */
 }
 
-.footer-content a {
-    color: #DB7093; /* Link color */
+.social-icons {
+    margin-right: 40px;
+    display: flex;
+    gap: 15px; /* Space between icons */
 }
 
-.footer-content .icon {
-    margin-left: 10px;
-    font-size: 1.5em;
-    color: #DB7093;
+.icon {
+    font-size: 18px;
+    transition: color 0.3s ease;
+    color: deeppink;
 }
 
-.footer-content .icon:hover {
-    color: #fff; /* Change to white on hover */
+.icon:hover {
+    color: #d083b6; /* Pink hover effect */
 }
+
+
+

@@ -13,6 +13,8 @@ const ProductCard = ({ product, addToCart, toggleFavorite, isFavorite, searchTer
     const [hovered, setHovered] = useState(false); // State to track hover
 
     const navigate = useNavigate(); // Get the navigation function from react-router-dom
+    // Adjust styles or structure for the favorites page
+
 
     // Fallback if the image fails to load
     const handleImageError = (e) => {
@@ -143,15 +145,9 @@ const ProductCard = ({ product, addToCart, toggleFavorite, isFavorite, searchTer
             <h3 className="product-price">{formatPrice(product.price)}</h3>
 
 
-            {/* Quantity controls */}
+
             <>
-                <div className="quantity-controls">
-                    <button className="quantity-btn-card" onClick={decreaseQuantity} aria-label="Decrease quantity">-
-                    </button>
-                    <span className="quantity-display-card">{quantity}</span>
-                    <button className="quantity-btn-card" onClick={increaseQuantity} aria-label="Increase quantity">+
-                    </button>
-                </div>
+
 
                 {/* Add to Cart button */}
                 <button
