@@ -26,7 +26,6 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL,
   email TEXT NOT NULL CHECK (position('@' IN email) > 1),
   delivery_address VARCHAR(255) NOT NULL,
-  preferences JSONB,
   is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -65,11 +64,11 @@ CREATE TABLE order_items (
   price_at_time DECIMAL(10, 2) NOT NULL
 );
 
-CREATE TABLE personalized_picks (
-  pick_id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(user_id),
-  product_id INTEGER REFERENCES products(product_id)
-);
+-- CREATE TABLE personalized_picks (
+--   pick_id SERIAL PRIMARY KEY,
+--   user_id INTEGER REFERENCES users(user_id),
+--   product_id INTEGER REFERENCES products(product_id)
+-- );
 
 CREATE TABLE tags (
   tag_id SERIAL PRIMARY KEY,

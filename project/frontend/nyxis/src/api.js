@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001/api";
+// const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001/api";
+const BASE_URL =  "http://localhost:3001/api";
+
 const API_URL = "https://nyxis-backend.surganov.dev/api/v1/products"
 /** API Class.
  *
@@ -24,7 +26,7 @@ class NyxisApi {
         const params = (method === "get") ? data : {};
 
         try {
-            return (await axios({ url, method, data, params, headers, timeout: 5000 })).data;
+            return (await axios({ url, method, data, params, headers })).data;
         } catch (err) {
             console.error("API Error:", err.response);
             let message = err.response?.data?.error?.message || "Unknown error occurred";
@@ -145,35 +147,39 @@ class NyxisApi {
     }
 
 
-    /** Signup a new user and get a token. */
-    static async signup(signupData) {
+    static async login(loginData) {
+        console.log("Login data:", loginData); // Log data being sent
         try {
-            const res = await axios.post(`${BASE_URL}/auth/register`, signupData);
+            const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
+            console.log("Received token:", res.data.token); // Log token
+            return res.data.token;
+        } catch (err) {
+            console.error("Login Error:", err.response || err.message);
+            throw err;
+        }
+    }
+
+    static async signup(signupData) {
+        console.log("Signup request payload:", signupData); // Log payload
+        try {
+            const res = await axios.post(`${BASE_URL}/auth/register`, signupData, {
+                headers: { "Content-Type": "application/json" },
+                timeout: 10000, // Ensure enough timeout
+            });
+
+
+            console.log("Received token:", res.data.token); // Log token
             return res.data.token;
         } catch (err) {
             if (err.response) {
-                console.error("Signup Error Response:", err.response.data);
+                console.error("Signup failed with server error:", err.response.data);
             } else {
-                console.error("Signup Error:", err.message);
+                console.error("Signup failed with network error:", err.message);
             }
             throw err;
         }
     }
 
-    /** Login a user and get a token. */
-    static async login(loginData) {
-        console.log("Login request data:", loginData); // Log data before request
-
-        try {
-            const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
-            console.log("Login response token:", res.data.token); // Log the response token
-
-            return res.data.token;
-        } catch (err) {
-            console.error("Login Error:", err.message);
-            throw err;
-        }
-    }
 
     /** Get the current user details by username. */
     static async getCurrentUser(username) {

@@ -22,32 +22,25 @@ class User {
      **/
 
     static async authenticate(username, password) {
-        // try to find the user first
-        const result = await db.query(
-            `SELECT username,
-                  password,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
-           FROM users
-           WHERE username = $1`,
-            [username],
+        const user = await db.query(
+            `SELECT username, password
+         FROM users
+         WHERE username = $1`,
+            [username]
         );
 
-        const user = result.rows[0];
-
-        if (user) {
-            // compare hashed password to a new hash from password
-            const isValid = await bcrypt.compare(password, user.password);
-            if (isValid === true) {
-                delete user.password;
-                return user;
-            }
+        if (user.rows.length === 0) {
+            throw new UnauthorizedError("Invalid username/password");
         }
 
-        throw new UnauthorizedError("Invalid username/password");
+        const isValid = await bcrypt.compare(password, user.rows[0].password);
+        if (!isValid) {
+            throw new UnauthorizedError("Invalid username/password");
+        }
+
+        return user.rows[0];
     }
+
 
     /** Register user with data.
      *
@@ -57,7 +50,7 @@ class User {
      **/
 
     static async register(
-        {username, firstName, lastName, password, email, isAdmin}) {
+        {username, firstName, lastName, password, email, deliveryAddress}) {
         const duplicateCheck = await db.query(
             `SELECT username
            FROM users
@@ -78,16 +71,23 @@ class User {
             first_name,
             last_name,
             email,
+            delivery_address,
             is_admin)
-           VALUES ($1, $2, $3, $4, $5, $6)
-           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
+           RETURNING username,
+            first_name AS "firstName",
+             last_name AS "lastName", 
+             email, 
+             delivery_address AS "deliveryAddress", 
+             is_admin AS "isAdmin"`,
             [
                 username,
                 hashedPassword,
                 firstName,
                 lastName,
                 email,
-                isAdmin,
+                deliveryAddress,
+                false,
             ],
         );
 

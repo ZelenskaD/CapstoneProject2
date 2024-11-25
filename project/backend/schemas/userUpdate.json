@@ -19,16 +19,10 @@
         "type": "string",
             "minLength": 1
     },
-    "preferences": {
-        "type": "object",
-            "additionalProperties": true
-    },
+
     "password": {
         "type": "string",
             "minLength": 6
-    },
-    "isAdmin": {
-        "type": "boolean"
     }
 },
     "required": ["email"],

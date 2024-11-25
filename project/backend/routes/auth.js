@@ -21,20 +21,27 @@ const { BadRequestError } = require("../expressError");
 
 router.post("/api/auth/token", async function (req, res, next) {
     try {
+        console.log("Login request body:", req.body); // Log incoming data
+
         const validator = jsonschema.validate(req.body, userAuthSchema);
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
+            console.error("Validation errors:", errs); // Log validation errors
             throw new BadRequestError(errs);
         }
 
         const { username, password } = req.body;
         const user = await User.authenticate(username, password);
+        console.log("Authenticated user:", user); // Log authenticated user
+
         const token = createToken(user);
         return res.json({ token });
     } catch (err) {
+        console.error("Login error:", err); // Log the error
         return next(err);
     }
 });
+
 
 
 /** POST /auth/register:   { user } => { token }
@@ -46,24 +53,34 @@ router.post("/api/auth/token", async function (req, res, next) {
  * Authorization required: none
  */
 
-router.post("/api/auth/register", async function (req, res, next) {
+router.post("/register", async function (req, res, next) {
     try {
-        console.log(req.body);
+        console.log("Register request body:", req.body); // Log incoming data
 
         const validator = jsonschema.validate(req.body, userRegisterSchema);
-        console.log(validator);
         if (!validator.valid) {
-            const errs = validator.errors.map(e => e.stack);
+            const errs = validator.errors.map((e) => e.stack);
+            console.error("Validation failed:", errs); // Log validation errors
             throw new BadRequestError(errs);
         }
 
         const newUser = await User.register({ ...req.body, isAdmin: false });
+        console.log("Registered user:", newUser); // Log user registration
+
         const token = createToken(newUser);
         return res.status(201).json({ token });
     } catch (err) {
+        console.error("Error in /auth/register route:", err); // Log any errors
         return next(err);
     }
 });
+
+
+
+
+
+
+
 
 
 module.exports = router;

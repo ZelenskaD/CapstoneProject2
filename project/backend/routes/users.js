@@ -17,17 +17,14 @@ const router = express.Router();
 
 /** POST / { user }  => { user, token }
  *
- * Adds a new user. This is not the registration endpoint --- instead, this is
- * only for admin users to add new users. The new user being added can be an
- * admin.
+
  *
  * This returns the newly created user and an authentication token for them:
  *  {user: { username, firstName, lastName, email, isAdmin }, token }
  *
- * Authorization required: admin
  **/
 
-router.post("/", ensureAdmin, async function (req, res, next) {
+router.post("/", async function (req, res, next) {
     try {
         const validator = jsonschema.validate(req.body, userNewSchema);
         if (!validator.valid) {
@@ -47,23 +44,23 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
 
 
-/** GET /[username] => { user }
- *
- * Returns { username, firstName, lastName, isAdmin, delivery_address }
- *
- *
- * Authorization required: admin or same user-as-:username
- **/
-
-router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
-    try {
-        const user = await User.getUser(req.params.username);
-        return res.json({ user });
-    } catch (err) {
-        console.error("Error fetching user data:", err);  // Log the error for visibility
-        return next(err);
-    }
-});
+// /** GET /[username] => { user }
+//  *
+//  * Returns { username, firstName, lastName, isAdmin, delivery_address }
+//  *
+//  *
+//  * Authorization required: admin or same user-as-:username
+//  **/
+//
+// router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
+//     try {
+//         const user = await User.getUser(req.params.username);
+//         return res.json({ user });
+//     } catch (err) {
+//         console.error("Error fetching user data:", err);  // Log the error for visibility
+//         return next(err);
+//     }
+// });
 
 
 /** PATCH /[username] { user } => { user }

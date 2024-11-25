@@ -22,26 +22,46 @@ function SignupForm({ signup }) {
         }));
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //
+    //     // Password length validation
+    //     if (formData.password.length < 5) {
+    //         setFormErrors(["Password must be at least 5 characters long"]);
+    //         return;
+    //     }
+    //
+    //     try {
+    //         let result = await signup(formData); // Call signup function
+    //         if (result.success) {
+    //             navigate("/");
+    //         } else {
+    //             setFormErrors(result.errors);
+    //         }
+    //     } catch (err) {
+    //         console.error("Error during signup:", err);
+    //     }
+    // };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Password length validation
-        if (formData.password.length < 5) {
-            setFormErrors(["Password must be at least 5 characters long"]);
+        if (!formData.username || !formData.password || formData.password.length < 5) {
+            setFormErrors(["All fields are required, and the password must be at least 5 characters long"]);
             return;
         }
-
         try {
-            let result = await signup(formData); // Call signup function
+            let result = await signup(formData);
             if (result.success) {
                 navigate("/");
             } else {
                 setFormErrors(result.errors);
             }
         } catch (err) {
-            console.error("Error during signup:", err);
+            setFormErrors(["An unexpected error occurred. Please try again."]);
         }
     };
+
 
     return (
         <div className="login-container"> {/* Reusing the container class */}

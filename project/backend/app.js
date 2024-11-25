@@ -4,20 +4,21 @@ const cors = require('cors');
 const app = express();
 const productsRoutes = require('./routes/products'); // Correctly reference the products route
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const authRoutes = require("./routes/auth");
+const usersRoutes = require("./routes/users");
+const { authenticateJWT } = require("./middleware/auth");
 
 
 app.use(cors());
 app.use(express.json());
+app.use(authenticateJWT);
+
+app.use("/auth", authRoutes);
+app.use("/users", usersRoutes);
 
 
-// Proxy middleware to forward requests to the external API
-app.use('/api', createProxyMiddleware({
-    target: 'http://makeup-api.herokuapp.com',
-    changeOrigin: true,
-    pathRewrite: {
-        '^/api': '/api/v1/products.json', // Rewrite path for API
-    },
-}));
+
+
 
 // Default route
 app.get("/", (req, res) => {
@@ -38,6 +39,14 @@ app.use(function (req, res, next) {
     res.status(404).json({ error: { message: "Not Found", status: 404 } });
 });
 
+// Proxy middleware to forward requests to the external API
+app.use('/api', createProxyMiddleware({
+    target: 'http://makeup-api.herokuapp.com',
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api': '/api/v1/products.json', // Rewrite path for API
+    },
+}));
 module.exports = app;
 
 
