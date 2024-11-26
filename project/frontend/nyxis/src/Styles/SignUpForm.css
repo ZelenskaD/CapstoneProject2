@@ -1,0 +1,118 @@
+/* General container styling */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Form styling */
+.form {
+    background-color: #D8BFD8; /* Soft lavender */
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 60px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Title styling */
+.form-title {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333; /* Dark gray for readability */
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Input group styling */
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #444;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 18px;
+    background-color: #fff; /* White background for inputs */
+    color: #333; /* Dark text color */
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #DDA0DD; /* Match form background on focus */
+    outline: none;
+}
+
+
+/* Button styling */
+.form-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #DDA0DD; /* Plum */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    justify-content: center; /* Horizontally center the button */
+    margin-left:10px;
+}
+
+.form-button:hover {
+    background-color: #DB7093; /* Lighter plum for hover */
+}
+
+/* Error box styling */
+.form-error-box {
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #f8d7da; /* Soft red for error background */
+    color: #721c24; /* Dark red text */
+    border-radius: 6px;
+    border: 1px solid #f5c6cb;
+    font-size: 16px;
+}
+
+.form-error-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.form-error-list {
+    padding: 0;
+    margin: 10px 0 0;
+    list-style-type: none;
+}
+
+.form-error-item {
+    font-size: 16px;
+}
+
+/* Link styling */
+.signup-link {
+    color: #DDA0DD; /* Match form button color */
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+    color: #DB7093; /* Lighter plum on hover */
+    text-decoration: underline;
+}

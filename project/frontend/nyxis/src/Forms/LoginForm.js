@@ -77,6 +77,14 @@ function LoginForm({ login }) {
                 <button type="submit" className="form-button">
                     Login
                 </button>
+
+                <p>
+                    Do not have an account?{" "}
+                    <a href="/signup" className="signup-link">
+                        Sign Up
+                    </a>
+                </p>
+
             </form>
         </div>
     );

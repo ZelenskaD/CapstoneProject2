@@ -92,7 +92,6 @@ class User {
                 firstName: "first_name",
                 lastName: "last_name",
                 deliveryAddress: "delivery_address",
-                preferences: "preferences",
                 isAdmin: "is_admin",
             });
         const usernameVarIdx = "$" + (values.length + 1);
@@ -104,7 +103,6 @@ class User {
                                 first_name AS "firstName",
                                 last_name AS "lastName",
                                 delivery_address AS "deliveryAddress",
-                                preferences,
                                 email,
                                 is_admin AS "isAdmin"`;
         const result = await db.query(querySql, [...values, username]);
@@ -138,144 +136,147 @@ class User {
     }
 
 
-    static async getPreferences(username) {
-        const result = await db.query(
-            `SELECT preferences
-         FROM users
-         WHERE username = $1`,
-            [username]
-        );
-
-        const preferences = result.rows[0];
-        if (!preferences) throw new NotFoundError(`No preferences found for user: ${username}`);
-
-        return preferences;
-    }
-
-
-    static async updatePreferences(username, preferences) {
-        const querySql = `UPDATE users
-                      SET preferences = $1
-                      WHERE username = $2
-                      RETURNING username, preferences`;
-        const result = await db.query(querySql, [preferences, username]);
-
-        const user = result.rows[0];
-        if (!user) throw new NotFoundError(`No user: ${username}`);
-
-        return user;
-    }
+    // static async getPreferences(username) {
+    //     const result = await db.query(
+    //         `SELECT preferences
+    //      FROM users
+    //      WHERE username = $1`,
+    //         [username]
+    //     );
+    //
+    //     const preferences = result.rows[0];
+    //     if (!preferences) throw new NotFoundError(`No preferences found for user: ${username}`);
+    //
+    //     return preferences;
+    // }
 
 
-    static async getDeliveryAddress(username) {
-        const result = await db.query(
-            `SELECT delivery_address AS "deliveryAddress"
-         FROM users
-         WHERE username = $1`,
-            [username]
-        );
+    // static async updatePreferences(username, preferences) {
+    //     const querySql = `UPDATE users
+    //                   SET preferences = $1
+    //                   WHERE username = $2
+    //                   RETURNING username, preferences`;
+    //     const result = await db.query(querySql, [preferences, username]);
+    //
+    //     const user = result.rows[0];
+    //     if (!user) throw new NotFoundError(`No user: ${username}`);
+    //
+    //     return user;
+    // }
 
-        const address = result.rows[0];
-        if (!address) throw new NotFoundError(`No delivery address found for user: ${username}`);
+    //
+    // static async getDeliveryAddress(username) {
+    //     const result = await db.query(
+    //         `SELECT delivery_address AS "deliveryAddress"
+    //      FROM users
+    //      WHERE username = $1`,
+    //         [username]
+    //     );
+    //
+    //     const address = result.rows[0];
+    //     if (!address) throw new NotFoundError(`No delivery address found for user: ${username}`);
+    //
+    //     return address;
+    // }
 
-        return address;
-    }
 
+    /** Given a username, return data about user.
+     *
+     * Returns { username, first_name, last_name, is_admin, jobs }
+     *   where jobs is { id, title, company_handle, company_name, state }
+     *
+     * Throws NotFoundError if user not found.
+     **/
 
     static async getUser(username) {
-        const result = await db.query(
-            `SELECT username,
-                first_name AS "firstName",
-                last_name AS "lastName",
-                email,
-                preferences,
-                delivery_address AS "deliveryAddress",
-                is_admin AS "isAdmin"
-         FROM users
-         WHERE username = $1`,
-            [username]
-        );
-
-        const user = result.rows[0];
-        if (!user) throw new NotFoundError(`No user found: ${username}`);
-
-        return user;
-    }
-
-    static async getUserOrders(userId) {
-        const result = await db.query(
-            `SELECT orders.order_id,
-                orders.order_date,
-                orders.total_price
-         FROM orders
-         WHERE orders.user_id = $1`,
-            [userId]
-        );
-
-        return result.rows;
-    }
-
-
-    static async getUserCart(userId) {
-        const result = await db.query(
-            `SELECT products.product_id,
-                products.name,
-                cart_items.quantity,
-                cart_items.price_at_time
-         FROM cart_items
-         JOIN products ON cart_items.product_id = products.product_id
-         JOIN cart ON cart_items.cart_id = cart.cart_id
-         WHERE cart.user_id = $1`,
-            [userId]
-        );
-
-        return result.rows;
-    }
-
-
-    static async getUserFavorites(userId) {
-        const result = await db.query(
-            `SELECT products.product_id,
-                products.name,
-                products.brand,
-                products.price
-         FROM favorites
-         JOIN products ON favorites.product_id = products.product_id
-         WHERE favorites.user_id = $1`,
-            [userId]
-        );
-
-        return result.rows;
-    }
-
-
-    static async getUserPersonalizedPicks(userId) {
-        const result = await db.query(
-            `SELECT products.product_id,
-                products.name,
-                products.brand,
-                products.price
-         FROM personalized_picks
-         JOIN products ON personalized_picks.product_id = products.product_id
-         WHERE personalized_picks.user_id = $1`,
-            [userId]
-        );
-
-        return result.rows;
+        console.log("Querying database for username:", username);
+        const result = await db.query(`
+        SELECT username, first_name, last_name, email, is_admin
+        FROM users
+        WHERE username = $1
+    `, [username]);
+        console.log("Database result:", result.rows);
+        if (!result.rows[0]) throw new NotFoundError(`No user: ${username}`);
+        return result.rows[0];
     }
 
 
 
-    static async remove(username) {
-        const result = await db.query(
-            `DELETE FROM users
-         WHERE username = $1
-         RETURNING username`,
-            [username]
-        );
-        const user = result.rows[0];
-        if (!user) throw new NotFoundError(`No user: ${username}`);
-    }
+
+    // static async getUserOrders(userId) {
+    //     const result = await db.query(
+    //         `SELECT orders.order_id,
+    //             orders.order_date,
+    //             orders.total_price
+    //      FROM orders
+    //      WHERE orders.user_id = $1`,
+    //         [userId]
+    //     );
+    //
+    //     return result.rows;
+    // }
+
+
+    // static async getUserCart(userId) {
+    //     const result = await db.query(
+    //         `SELECT products.product_id,
+    //             products.name,
+    //             cart_items.quantity,
+    //             cart_items.price_at_time
+    //      FROM cart_items
+    //      JOIN products ON cart_items.product_id = products.product_id
+    //      JOIN cart ON cart_items.cart_id = cart.cart_id
+    //      WHERE cart.user_id = $1`,
+    //         [userId]
+    //     );
+    //
+    //     return result.rows;
+    // }
+
+
+    // static async getUserFavorites(userId) {
+    //     const result = await db.query(
+    //         `SELECT products.product_id,
+    //             products.name,
+    //             products.brand,
+    //             products.price
+    //      FROM favorites
+    //      JOIN products ON favorites.product_id = products.product_id
+    //      WHERE favorites.user_id = $1`,
+    //         [userId]
+    //     );
+    //
+    //     return result.rows;
+    // }
+
+
+    // static async getUserPersonalizedPicks(userId) {
+    //     const result = await db.query(
+    //         `SELECT products.product_id,
+    //             products.name,
+    //             products.brand,
+    //             products.price
+    //      FROM personalized_picks
+    //      JOIN products ON personalized_picks.product_id = products.product_id
+    //      WHERE personalized_picks.user_id = $1`,
+    //         [userId]
+    //     );
+    //
+    //     return result.rows;
+    // }
+
+
+
+    // static async remove(username) {
+    //     const result = await db.query(
+    //         `DELETE FROM users
+    //      WHERE username = $1
+    //      RETURNING username`,
+    //         [username]
+    //     );
+    //     const user = result.rows[0];
+    //     if (!user) throw new NotFoundError(`No user: ${username}`);
+    // }
 
 
 

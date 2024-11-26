@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/Forms.css"; // Shared CSS file for Login and Signup
+import "../Styles/SignUpForm.css"; // Shared CSS file for Login and Signup
 
 function SignupForm({ signup }) {
     const [formData, setFormData] = useState({

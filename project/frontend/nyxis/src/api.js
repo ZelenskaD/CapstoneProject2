@@ -17,31 +17,19 @@ class NyxisApi {
     static token;
 
     // General method to make API requests
-    static async request(endpoint, data = {}, method = "get") {
-        console.debug("API Call:", endpoint, data, method);
-
+    static async request(endpoint, data = {}, method = "get", token = localStorage.getItem("nyxis-token")) {
         const url = `${BASE_URL}/${endpoint}`;
-        const headers = { Authorization: `Bearer ${NyxisApi.token}` };
+        const headers = { Authorization: `Bearer ${token}` };
         const params = method === "get" ? data : {};
 
         try {
-            return (
-                await axios({
-                    url,
-                    method,
-                    data,
-                    params,
-                    headers,
-                    timeout: 20000, // Increase timeout to 20 seconds
-                })
-            ).data;
+            return await axios({ url, method, data, params, headers });
         } catch (err) {
             console.error("API Error:", err.response || err.message);
-            let message =
-                err.response?.data?.error?.message || "Unknown error occurred";
-            throw Array.isArray(message) ? message : [message];
+            throw err.response?.data?.error || new Error("An unexpected error occurred.");
         }
     }
+
 
 
 
@@ -169,10 +157,10 @@ class NyxisApi {
         }
     }
 
-
     static async login(loginData) {
         try {
             const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
+            console.log("Received token:", res.data.token); // Debug log
             return res.data.token;
         } catch (err) {
             console.error("Login Error:", err.response || err.message);
@@ -183,19 +171,33 @@ class NyxisApi {
 
 
 
-    /** Get the current user details by username. */
+    // static async login(loginData) {
+    //   const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
+    //   return res.data.token;  // Assuming your backend returns a token
+    // }
+
     static async getCurrentUser(username) {
-        let res = await this.request(`users/${username}`);
-        return res.user;
+        console.log("Fetching user info for:", username); // Debug log
+        const url = `${BASE_URL}/users/${username}`;
+        console.log("Request URL:", url); // Debug log
+        try {
+            const response = await axios.get(url);
+            return response.data;
+        } catch (err) {
+            console.error("API Error: ", err);
+            throw err;
+        }
     }
 
-    /** Update the user profile with new data. */
+
+
     static async updateProfile(username, data) {
-        const res = await this.request(`users/${username}`, data, "patch");
-        return res.user;
+        const res = await this.request(`${BASE_URL}/users/${username}`, data, "patch");
+        return res.data;
     }
 
-    // Add more methods as needed...
+
+
 }
 
 export default NyxisApi;

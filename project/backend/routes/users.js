@@ -44,23 +44,32 @@ router.post("/", async function (req, res, next) {
 
 
 
-// /** GET /[username] => { user }
-//  *
-//  * Returns { username, firstName, lastName, isAdmin, delivery_address }
-//  *
-//  *
-//  * Authorization required: admin or same user-as-:username
-//  **/
-//
-// router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
-//     try {
-//         const user = await User.getUser(req.params.username);
-//         return res.json({ user });
-//     } catch (err) {
-//         console.error("Error fetching user data:", err);  // Log the error for visibility
-//         return next(err);
-//     }
-// });
+/** GET /[username] => { user }
+ *
+ * Returns { username, firstName, lastName, isAdmin, delivery_address }
+ *
+ *
+ * Authorization required: admin or same user-as-:username
+ **/
+
+router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
+    try {
+        const { username } = req.params;
+        console.log("Backend received username:", username); // Debug log
+        const user = await User.getUser(username);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.json(user);
+    } catch (err) {
+        console.error("Error in backend route:", err);
+        next(err);
+    }
+});
+
+
+
+
 
 
 /** PATCH /[username] { user } => { user }
@@ -89,19 +98,7 @@ router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, n
 });
 
 
-/** DELETE /[username]  =>  { deleted: username }
- *
- * Authorization required: admin or same-user-as-:username
- **/
 
-router.delete("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
-    try {
-        await User.remove(req.params.username);
-        return res.json({ deleted: req.params.username });
-    } catch (err) {
-        return next(err);
-    }
-});
 
 
 

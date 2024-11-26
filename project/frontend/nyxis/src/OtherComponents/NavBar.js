@@ -15,17 +15,22 @@ import {
 import "../Styles/NavBar.css";
 import NyxisApi from "../api";
 
-function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = []  }) {
+function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], toggleFavoritesOpen }) {
     const { currentUser } = useContext(UserContext);
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [cartCount, setCartCount] = useState(0);
+    const [favoritesCount, setFavoritesCount] = useState(0);
 
     useEffect(() => {
         const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
         setCartCount(totalItems);
     }, [cart]);
+
+    useEffect(() => {
+        setFavoritesCount(favorites.length);
+    }, [favorites]);
 
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
@@ -54,9 +59,7 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = []  }
                 </Button>
 
                 <Nav className={`nav-items ${isNavOpen ? "open" : ""}`}>
-                    <NavItem className="nav-item">
-                        <NavLink to="/new" className="nav-link">New</NavLink>
-                    </NavItem>
+
 
                     <NavItem className="nav-item">
                         <ModalDropdown
@@ -74,12 +77,16 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = []  }
                         />
                     </NavItem>
 
+                    {/* Favorites Icon */}
                     <NavItem className="nav-item">
-                        <NavLink to="/favorites" className="nav-link">
-                            <FontAwesomeIcon icon={faHeart} />
-                        </NavLink>
+                        <div className="favorites-icon-wrapper">
+                            <NavLink to="#" className="nav-link" onClick={toggleFavoritesOpen}>
+                                <FontAwesomeIcon icon={faHeart} />
+                            </NavLink>
+                        </div>
                     </NavItem>
 
+                    {/* Cart Icon */}
                     <NavItem className="nav-item">
                         <div className="cart-icon-wrapper">
                             <NavLink to="#" className="nav-link" onClick={toggleCartOpen}>
@@ -108,11 +115,28 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = []  }
                         </form>
                     )}
 
+                    <UserContext.Consumer>
+                        {({ currentUser }) =>
+                            currentUser ? (
+                                <nav>
+                                    <a href="/profile">Profile of {currentUser.firstName}</a>
+                                </nav>
+                            ) : (
+                                <nav>
+                                    <a href="/login">Login</a>
+                                </nav>
+                            )
+                        }
+                    </UserContext.Consumer>
+
+
                     {currentUser ? (
                         <NavItem className="nav-item">
                             <NavLink to="/" onClick={logout} className="nav-link">
                                 <FontAwesomeIcon icon={faArrowRightFromBracket} /> {currentUser.firstName || currentUser.username}
                             </NavLink>
+
+
                         </NavItem>
                     ) : (
                         <NavItem className="nav-item">
@@ -128,6 +152,7 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = []  }
 }
 
 export default NavBar;
+
 
 
 

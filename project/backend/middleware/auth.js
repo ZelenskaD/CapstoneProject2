@@ -65,17 +65,25 @@ function ensureAdmin(req, res, next) {
  *  If not, raises Unauthorized.
  */
 
-function ensureCorrectUserOrAdmin(req, res, next) {
+const ensureCorrectUserOrAdmin = (req, res, next) => {
     try {
-        const user = res.locals.user;
-        if (!(user && (user.isAdmin || user.username === req.params.username))) {
-            throw new UnauthorizedError();
+        const { username } = req.params;
+        console.log("Middleware: res.locals.user", res.locals.user);
+        console.log("Middleware: req.params.username", req.params.username);
+
+        if (res.locals.user && (res.locals.user.isAdmin || res.locals.user.username === username)) {
+            console.log("Middleware: res.locals.user", res.locals.user);
+            console.log("Middleware: req.params.username", req.params.username);
+
+            return next();
+        } else {
+            throw new UnauthorizedError("Unauthorized");
         }
-        return next();
     } catch (err) {
-        return next(err);
+        next(err);
     }
-}
+};
+
 
 
 module.exports = {

@@ -3,7 +3,7 @@ import "../Styles/CartModal.css";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import defaultImage from './default_picture_cart.png';  // Adjust the path as needed
+import defaultImage from './nyxisdefault.jpg';  // Adjust the path as needed
 
 const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
     const navigate = useNavigate(); // Initialize useNavigate
@@ -69,7 +69,7 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
                         </li>
                     ))
                 ) : (
-                    <li>Your cart is empty</li>
+                    <p className="prg">Your cart is empty</p>
                 )}
             </ul>
             <h3 className="total-cart-price">Total: ${calculateTotal()}</h3>

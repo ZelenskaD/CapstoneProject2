@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NavBar from '../OtherComponents/NavBar';
 import ProductsPage from './ProductsPage';
+import FavoritesModal from '../OtherComponents/FavoritesModal';
 
 const Shop = () => {
     const [favorites, setFavorites] = useState(() => {
@@ -7,36 +10,32 @@ const Shop = () => {
         return savedFavorites ? JSON.parse(savedFavorites) : [];
     });
 
-
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }, [cart]);
+    const [isFavoritesOpen, setIsFavoritesOpen] = useState(false); // Modal state
 
-
-
-    useEffect(() => {
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }, [favorites]);
-
-
-
+    const toggleFavoritesOpen = () => {
+        setIsFavoritesOpen(!isFavoritesOpen);
+    };
 
 
     const addToCart = (product, quantity) => {
-        const existingItem = cart.find(item => item.id === product.id);
-        if (existingItem) {
-            setCart(cart.map(item =>
-                item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-            ));
+        const updatedCart = [...cart];
+        const existingItemIndex = updatedCart.findIndex(item => item.id === product.id);
+
+        if (existingItemIndex >= 0) {
+            updatedCart[existingItemIndex].quantity += quantity;
         } else {
-            setCart([...cart, { ...product, quantity }]);
+            updatedCart.push({ ...product, quantity });
         }
+
+        setCart(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
     };
+
 
     const toggleFavorite = (product) => {
         setFavorites(favorites =>
@@ -46,18 +45,34 @@ const Shop = () => {
         );
     };
 
-
     return (
-        <ProductsPage
-            addToCart={addToCart}
-            toggleFavorite={toggleFavorite}
-            favorites={favorites}
-            isFavorite={false}
-        />
+        <>
+            <NavBar
+                logout={() => {}}
+                cart={cart}
+                toggleCartOpen={() => {}}
+                favorites={favorites}
+                toggleFavoritesOpen={toggleFavoritesOpen}
+            />
+            <ProductsPage
+                addToCart={addToCart}
+                toggleFavorite={toggleFavorite}
+                favorites={favorites}
+            />
+            {isFavoritesOpen && (
+                <FavoritesModal
+                    favorites={favorites}
+                    toggleFavorite={toggleFavorite}
+                    toggleFavoritesOpen={toggleFavoritesOpen}
+                />
+            )}
+        </>
     );
 };
 
 export default Shop;
+
+
 
 
 

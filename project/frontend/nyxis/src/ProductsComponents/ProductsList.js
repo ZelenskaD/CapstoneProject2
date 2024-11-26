@@ -3,7 +3,7 @@ import ProductCard from './ProductCard';
 import '../Styles/ProductList.css'; // Add your custom CSS
 import NyxisApi from '../api'; // Assuming NyxisApi is used for API calls
 
-const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = null, filterValue = null, products: passedProducts = [], searchTerm }) => {
+const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = null, filterValue = null, products: passedProducts = [], searchTerm, cart, handleRemoveFromCart}) => {
     console.log("addToCart in ProductsList:", addToCart);  // Check if addToCart is being passed
 
     const [products, setProducts] = useState([]);
@@ -102,6 +102,9 @@ const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = 
                         toggleFavorite={toggleFavorite}
                         isFavorite={favorites.some(fav => fav.id === product.id)}  // Check if product is a favorite
                         searchTerm={searchTerm}
+                        cart={cart}
+                        handleRemoveItem={handleRemoveFromCart} // Optional
+
                     />
                 ))}
             </div>
