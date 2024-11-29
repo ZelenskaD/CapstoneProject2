@@ -39,6 +39,12 @@ app.use(function (req, res, next) {
     res.status(404).json({ error: { message: "Not Found", status: 404 } });
 });
 
+app.use((err, req, res, next) => {
+    console.error("Unhandled error:", err.stack || err.message || err);
+    res.status(500).json({ error: "Internal server error" });
+});
+
+
 // Proxy middleware to forward requests to the external API
 app.use('/api', createProxyMiddleware({
     target: 'http://makeup-api.herokuapp.com',

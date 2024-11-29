@@ -18,7 +18,7 @@ class NyxisApi {
 
     // General method to make API requests
     static async request(endpoint, data = {}, method = "get", token = localStorage.getItem("nyxis-token")) {
-        const url = `${BASE_URL}/${endpoint}`;
+        const url = `${endpoint}`;
         const headers = { Authorization: `Bearer ${token}` };
         const params = method === "get" ? data : {};
 
@@ -29,9 +29,6 @@ class NyxisApi {
             throw err.response?.data?.error || new Error("An unexpected error occurred.");
         }
     }
-
-
-
 
 
     static async getAllProducts() {
@@ -150,6 +147,12 @@ class NyxisApi {
             const res = await axios.post(`${BASE_URL}/auth/register`, signupData, {
                 headers: { "Content-Type": "application/json" },
             });
+
+            // Store the token in localStorage
+            if (res.data.token) {
+                localStorage.setItem("nyxis-token", res.data.token);
+            }
+
             return { success: true, token: res.data.token };
         } catch (err) {
             console.error("Signup Error:", err.response || err.message);
@@ -161,12 +164,17 @@ class NyxisApi {
         try {
             const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
             console.log("Received token:", res.data.token); // Debug log
+            // Store the token in localStorage
+            if (res.data.token) {
+                localStorage.setItem("nyxis-token", res.data.token);
+            }
             return res.data.token;
         } catch (err) {
             console.error("Login Error:", err.response || err.message);
             throw err;
         }
     }
+
 
 
 
@@ -178,10 +186,8 @@ class NyxisApi {
 
     static async getCurrentUser(username) {
         console.log("Fetching user info for:", username); // Debug log
-        const url = `${BASE_URL}/users/${username}`;
-        console.log("Request URL:", url); // Debug log
         try {
-            const response = await axios.get(url);
+            const response = await this.request(`${BASE_URL}/users/${username}`, {}, "get");
             return response.data;
         } catch (err) {
             console.error("API Error: ", err);

@@ -23,29 +23,51 @@ function SignupForm({ signup }) {
         }));
     };
 
-    /** Handles form submission */
+    // /** Handles form submission */
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //
+    //     // Validate password length before submission
+    //     if (formData.password.length < 5) {
+    //         setFormErrors(["Password must be at least 5 characters long"]);
+    //         return;
+    //     }
+    //
+    //     try {
+    //         // Call the signup function passed as a prop
+    //         const result = await signup(formData);
+    //         if (result.success) {
+    //             navigate("/"); // Redirect to home page on successful signup
+    //         } else {
+    //             setFormErrors(result.errors || ["Signup failed"]);
+    //         }
+    //     } catch (err) {
+    //         console.error("Error during signup:", err);
+    //         setFormErrors(["An unexpected error occurred. Please try again."]);
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate password length before submission
         if (formData.password.length < 5) {
             setFormErrors(["Password must be at least 5 characters long"]);
             return;
         }
 
         try {
-            // Call the signup function passed as a prop
-            const result = await signup(formData);
+            const result = await signup(formData); // Signup call
             if (result.success) {
-                navigate("/"); // Redirect to home page on successful signup
+                navigate("/");
             } else {
-                setFormErrors(result.errors || ["Signup failed"]);
+                setFormErrors(result.errors);
             }
         } catch (err) {
             console.error("Error during signup:", err);
             setFormErrors(["An unexpected error occurred. Please try again."]);
         }
     };
+
 
     return (
         <div className="form-container"> {/* Reusing shared container class */}
