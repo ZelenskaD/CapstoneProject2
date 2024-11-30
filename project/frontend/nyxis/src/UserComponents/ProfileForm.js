@@ -5,24 +5,34 @@ import UserContext from "../OtherComponents/UserContext";
 
 function ProfileForm() {
     const { currentUser, setCurrentUser } = useContext(UserContext);
-    const [formData, setFormData] = useState(null);
+    const [formData, setFormData] = useState({});
     const [formErrors, setFormErrors] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
+
+    // Mapping field names to more user-friendly labels
+    const fieldLabels = {
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        email: 'Email',
+        deliveryAddress: 'Delivery Address',
+    };
 
     useEffect(() => {
         const fetchProfile = async () => {
             if (currentUser) {
+                console.log(currentUser); // Log to verify the structure
                 setFormData({
-                    firstName: currentUser.firstName,
-                    lastName: currentUser.lastName,
-                    email: currentUser.email,
-                    deliveryAddress: currentUser.deliveryAddress,
+                    firstName: currentUser.first_name || "",
+                    lastName: currentUser.last_name || "",
+                    email: currentUser.email || "",
+                    deliveryAddress: currentUser.deliveryAddress || "",
                 });
             }
         };
         fetchProfile();
     }, [currentUser]);
 
+    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((data) => ({
@@ -31,6 +41,7 @@ function ProfileForm() {
         }));
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -42,25 +53,31 @@ function ProfileForm() {
         }
     };
 
+    // Display loading message if form data is not ready
     if (!formData) return <div>Loading...</div>;
 
     return (
         <div className="form-container">
             <form className="form" onSubmit={handleSubmit}>
                 <h3 className="form-title">Profile</h3>
+
+                {/* Loop through the formData keys to create input fields */}
                 {Object.keys(formData).map((field) => (
                     <div key={field} className="form-group">
-                        <label className="form-label">{field}</label>
+                        <label className="form-label">{fieldLabels[field] || field}</label>
                         <input
                             className="form-input"
                             name={field}
                             type="text"
-                            value={formData[field]}
+                            value={formData[field] || ""}
                             onChange={handleChange}
                             disabled={!isEditing}
+                            placeholder={fieldLabels[field] || field} // Optional placeholder
                         />
                     </div>
                 ))}
+
+                {/* Display errors if any */}
                 {formErrors.length > 0 && (
                     <div className="form-error-box">
                         {formErrors.map((err, idx) => (
@@ -68,6 +85,8 @@ function ProfileForm() {
                         ))}
                     </div>
                 )}
+
+                {/* Edit or Save button */}
                 {isEditing ? (
                     <button type="submit" className="form-button">
                         Save
@@ -87,5 +106,6 @@ function ProfileForm() {
 }
 
 export default ProfileForm;
+
 
 

@@ -1,0 +1,79 @@
+/* CategoryLinks.css */
+
+.category-links {
+    text-align: center;
+    margin: 40px 0;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.category-gallery {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+    padding-bottom: 10px;  /* Adds some space for better aesthetics */
+    -webkit-overflow-scrolling: touch;  /* Smooth scrolling on iOS */
+    scroll-snap-type: x mandatory;  /* Optional: creates snap effect */
+}
+
+.category-item {
+    text-align: center;
+    flex-shrink: 0;  /* Prevent items from shrinking */
+    scroll-snap-align: center;  /* Optional: makes the scroll "snap" to the center */
+}
+
+.circle {
+    width: 300px;  /* Size of the circle */
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-item p {
+    margin-top: 10px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.category-item:hover .circle {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.category-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Optional: Styling for the scroll bar to make it less obtrusive on mobile */
+.category-gallery::-webkit-scrollbar {
+    height: 8px;
+}
+
+.category-gallery::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.category-gallery::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}

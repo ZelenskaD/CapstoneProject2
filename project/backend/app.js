@@ -7,12 +7,13 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const { authenticateJWT } = require("./middleware/auth");
+const stripeRoutes = require("./routes/stripe");
 
 
 app.use(cors());
 app.use(express.json());
 app.use(authenticateJWT);
-
+app.use("/api/stripe", stripeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 

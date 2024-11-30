@@ -1,0 +1,53 @@
+/* BrandImages.css */
+.brand-gallery {
+    text-align: center;                   /* Center the content */
+    display: flex;
+    flex-wrap: wrap;                      /* Allow items to wrap */
+    justify-content: space-around;        /* Space between items */
+}
+
+.brand-item {
+    display: inline-block;                /* Make the items inline-block */
+    margin: 10px;                          /* Margin around each item */
+    width: 20%;                            /* Set width to 20% of the container */
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-item img {
+    height: 100%;                          /* Ensure image fills the container */
+    width: 100%;
+    object-fit: cover;                     /* Ensure image covers the container without distortion */
+    border-radius: 8px;
+}
+
+.brand-item:hover {
+    transform: scale(1.05);                /* Zoom effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+/* Responsive design for medium screens (e.g., tablets) */
+@media (max-width: 1024px) {  /* Adjusted for medium screens like tablets */
+    .brand-item {
+        width: 30%;                        /* Set width to 30% for medium screens */
+    }
+}
+
+/* Responsive design for small screens (e.g., mobile phones) */
+@media (max-width: 768px) {  /* Adjusted for smaller screens like phones */
+    .brand-item {
+        width: 45%;                        /* Set width to 45% for smaller screens */
+        height: 150px;                     /* Optional: Adjust the height of the items for small screens */
+    }
+}
+
+/* Responsive design for extra small screens (e.g., very small phones) */
+@media (max-width: 480px) {
+    .brand-item {
+        width: 100%;                       /* Set width to 100% on very small screens */
+        height: 120px;                     /* Adjust height for better fit */
+    }
+}

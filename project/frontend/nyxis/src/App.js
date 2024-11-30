@@ -11,18 +11,21 @@ import { jwtDecode } from "jwt-decode";
 import NyxisApi from "./api.js";
 import FilteredProducts from "./ProductsComponents/FilteredProducts";
 import BannerCarousel from "./Banners/BannerCarousel";
-import ButtonsComponent from "./OtherComponents/ButtonsComponent";
 import TagsButtonComponent from "./OtherComponents/TagsButtonComponent";
 import Shop from "./ProductsComponents/Shop";
+import BrandImages from "./OtherComponents/BrandImages";
 import CartModal from './OtherComponents/CartModal';
 import ProductsList from "./ProductsComponents/ProductsList";
 import ProductDetail from "./ProductsComponents/ProductDetail";
 import FavoritesPage from "./OtherComponents/FavoritesModal";
 import Footer from "./OtherComponents/Footer";
 import ParentComponent from "./OtherComponents/ParentComponent";
+import SuccessPage from "./OtherComponents/SuccessPage";
+import CancelPage from "./OtherComponents/CancelPage";
 
 import ProfileForm from "./UserComponents/ProfileForm";
 import FavoritesModal from "./OtherComponents/FavoritesModal"; // Import FavoritesModal
+import ProductSearch from "./OtherComponents/ProductSearch.";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("nyxis-token") || null);
@@ -41,6 +44,7 @@ function App() {
 
   const [cartOpen, setCartOpen] = useState(false); // Cart modal state
   const [favoritesOpen, setFavoritesOpen] = useState(false); // Favorites modal state
+
 
   // Toggle functions
   const toggleCartOpen = () => setCartOpen(!cartOpen);
@@ -176,6 +180,10 @@ function App() {
                   <Route path="/" element={<Homepage />} />
                   <Route path="/signup" element={<SignupForm signup={signup} />} />
                   <Route path="/login" element={<LoginForm login={login} />} />
+                  <Route path="/search" element={<ProductSearch />} />
+                  <Route path="/success" element={<SuccessPage />} />
+                  <Route path="/cancel" element={<CancelPage />} />
+
                   <Route path="/profile" element={<ProfileForm  />} />
                   <Route path="/makeup" element={<ProductsList favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} searchTerm={searchTerm} />} />
                   <Route path="/makeup/tag/:tag" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="tag" />} />

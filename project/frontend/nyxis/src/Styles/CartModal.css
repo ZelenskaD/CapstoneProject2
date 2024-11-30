@@ -96,7 +96,7 @@
 }
 
 .cancel-btn {
-    background-color: #FF5A5F;
+    background-color: #d083b6;
 }
 
 /* Media Queries for Responsive Design */
@@ -120,4 +120,16 @@
         width: 25px;
         height: 25px;
     }
+}
+
+.test-notification{
+    background-color: #db7093;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.test-notification p {
+font-weight: bold;
+    text-align: center;
 }

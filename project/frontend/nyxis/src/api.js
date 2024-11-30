@@ -184,6 +184,18 @@ class NyxisApi {
     //   return res.data.token;  // Assuming your backend returns a token
     // }
 
+    static async getStripeID(lineItems) {
+        console.log("Getting Stripe ID");
+        try {
+            const response = await this.request(`${BASE_URL}/stripe/create-checkout-session`, lineItems, "post")
+            console.log("Received Stripe ID:", response.data);
+            return response.data
+        } catch (err) {
+            console.error("Error fetching Stripe ID:", err);
+            throw err
+        }
+    }
+
     static async getCurrentUser(username) {
         console.log("Fetching user info for:", username); // Debug log
         try {
@@ -200,6 +212,24 @@ class NyxisApi {
     static async updateProfile(username, data) {
         const res = await this.request(`${BASE_URL}/users/${username}`, data, "patch");
         return res.data;
+    }
+
+
+    // Search for products by name (make it static)
+    static async searchProductsByName(query) {
+        try {
+            console.log(`Making request to search for products: ${query}`);
+            const res = await axios.get(`${API_URL}?name=${encodeURIComponent(query)}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Error searching for products:", error.response?.data || error.message);
+            throw error;  // Re-throw to handle it elsewhere in your code
+        }
     }
 
 

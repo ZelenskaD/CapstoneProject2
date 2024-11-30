@@ -14,37 +14,59 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import "../Styles/NavBar.css";
 import NyxisApi from "../api";
+import { debounce } from 'lodash';
 
 function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], toggleFavoritesOpen }) {
-    const { currentUser } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);  // Get the current user from context
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const [cartCount, setCartCount] = useState(0);
-    const [favoritesCount, setFavoritesCount] = useState(0);
+    const [loading, setLoading] = useState(false); // Add loading state
+    const [error, setError] = useState(null);
 
+    // Update cart count when the cart changes
     useEffect(() => {
         const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
         setCartCount(totalItems);
     }, [cart]);
 
-    useEffect(() => {
-        setFavoritesCount(favorites.length);
-    }, [favorites]);
-
+    // Toggle navigation menu
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
     };
 
-    const handleSearchClick = () => {
-        setIsSearchOpen(!isSearchOpen);
+    // Debounced search function
+    const debouncedSearch = debounce(async (query) => {
+        if (query.length > 2) {
+            setLoading(true);
+            try {
+                const results = await NyxisApi.searchProductsByName(query); // Make sure this API is filtering by query
+                setSearchResults(results);
+            } catch (error) {
+                setError(error.response?.data?.detail || 'Error searching for products');
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            setSearchResults([]); // Clear results if query is shorter than 3 chars
+        }
+    }, 500);
+
+    // Handle changes in search input
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+        debouncedSearch(query); // Trigger debounced search
     };
 
+    // Handle search submit
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        onSearch(searchQuery);  // Call the parent search handler
+        onSearch(searchQuery);
         setSearchQuery('');
-        setIsSearchOpen(false);  // Close the search bar after submitting
+        setSearchResults([]); // Clear search results after submitting
     };
 
     return (
@@ -54,12 +76,12 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], t
                     <NavLink to="/" className="nav-link">Nyxis</NavLink>
                 </NavItem>
 
+                {/* Hamburger Icon for Mobile View */}
                 <Button className="navbar-toggler" onClick={toggleNav}>
                     <FontAwesomeIcon icon={faBars} />
                 </Button>
 
                 <Nav className={`nav-items ${isNavOpen ? "open" : ""}`}>
-
 
                     <NavItem className="nav-item">
                         <ModalDropdown
@@ -96,55 +118,38 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], t
                         </div>
                     </NavItem>
 
-                    {/* Search icon for mobile */}
-                    <NavItem className="nav-item search-icon-wrapper">
-                        <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearchClick} />
-                    </NavItem>
+                    {/* User-specific Navigation Links */}
+                    {currentUser ? (
+                        <NavItem className="nav-item">
+                            <NavLink to="/profile" className="nav-link">
+                                Profile of {currentUser.firstName || currentUser.username}
+                            </NavLink>
+                        </NavItem>
+                    ) : (
+                        <>
+                            <NavItem className="nav-item">
+                                <NavLink to="/signup" className="nav-link">
+                                    <FontAwesomeIcon icon={faUserPlus} /> Sign Up
+                                </NavLink>
+                            </NavItem>
 
-                    {/* Display search bar when search icon is clicked */}
-                    {isSearchOpen && (
-                        <form onSubmit={handleSearchSubmit} className="search-bar show">
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search products..."
-                                className="search-input"
-                            />
-                            <button type="submit" className="search-submit-btn">Search</button>
-                        </form>
+                            <NavItem className="nav-item">
+                                <NavLink to="/login" className="nav-link">
+                                     Login
+                                </NavLink>
+                            </NavItem>
+                        </>
                     )}
 
-                    <UserContext.Consumer>
-                        {({ currentUser }) =>
-                            currentUser ? (
-                                <nav>
-                                    <a href="/profile">Profile of {currentUser.firstName}</a>
-                                </nav>
-                            ) : (
-                                <nav>
-                                    <a href="/login">Login</a>
-                                </nav>
-                            )
-                        }
-                    </UserContext.Consumer>
-
-
+                    {/* Logout or Login based on user authentication */}
                     {currentUser ? (
                         <NavItem className="nav-item">
                             <NavLink to="/" onClick={logout} className="nav-link">
-                                <FontAwesomeIcon icon={faArrowRightFromBracket} /> {currentUser.firstName || currentUser.username}
-                            </NavLink>
-
-
-                        </NavItem>
-                    ) : (
-                        <NavItem className="nav-item">
-                            <NavLink to="/login" className="nav-link">
-                                <FontAwesomeIcon icon={faUserPlus} /> Login
+                                <FontAwesomeIcon icon={faArrowRightFromBracket} /> Logout
                             </NavLink>
                         </NavItem>
-                    )}
+                    ) : null}
+
                 </Nav>
             </div>
         </Navbar>
@@ -152,6 +157,8 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], t
 }
 
 export default NavBar;
+
+
 
 
 

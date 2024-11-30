@@ -1,0 +1,55 @@
+/* Custom modal styles for success page */
+.success-modal {
+    background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for the modal */
+}
+
+.success-modal-header {
+    background-color: #ff80ab; /* Soft pink background */
+    color: white; /* White text for header */
+    font-family: 'Arial', sans-serif; /* Clean font */
+    text-align: center; /* Center the text */
+    font-weight: bold;
+}
+
+.success-modal-title {
+    color: #ff4081; /* Lighter pink for the title */
+    text-align: center; /* Center title text */
+    font-size: 1.5rem;
+}
+
+.success-modal-description {
+    color: #555; /* Soft gray text */
+    text-align: center;
+    font-size: 1rem;
+}
+
+.success-modal-footer {
+    background-color: #ffe0eb; /* Light pink footer background */
+    text-align: center;
+}
+
+.success-modal-btn {
+    background-color: #ff4081; /* Button with the same pink */
+    color: white;
+    font-size: 1rem;
+    border-radius: 20px; /* Rounded corners for button */
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.success-modal-btn:hover {
+    background-color: #f50057; /* Darker pink on hover */
+    cursor: pointer;
+}
+
+/* Extra padding on mobile */
+@media (max-width: 576px) {
+    .success-modal-title {
+        font-size: 1.2rem;
+    }
+
+    .success-modal-description {
+        font-size: 0.9rem;
+    }
+}
+
