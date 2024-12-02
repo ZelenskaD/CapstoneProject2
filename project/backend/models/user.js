@@ -138,24 +138,6 @@ class User {
 
 
 
-
-
-    //
-    // static async getDeliveryAddress(username) {
-    //     const result = await db.query(
-    //         `SELECT delivery_address AS "deliveryAddress"
-    //      FROM users
-    //      WHERE username = $1`,
-    //         [username]
-    //     );
-    //
-    //     const address = result.rows[0];
-    //     if (!address) throw new NotFoundError(`No delivery address found for user: ${username}`);
-    //
-    //     return address;
-    // }
-
-
     /** Given a username, return data about user.
      *
      * Returns { username, first_name, last_name, is_admin, jobs }

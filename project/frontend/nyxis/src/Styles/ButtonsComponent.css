@@ -53,6 +53,9 @@ h3 {
         scroll-behavior: smooth; /* Adds smooth scrolling for mobile */
         -webkit-overflow-scrolling: touch; /* Enables smooth scrolling on iOS */
     }
+
+
+
 }
 
 

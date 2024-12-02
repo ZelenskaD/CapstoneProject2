@@ -87,20 +87,6 @@ class Product {
     }
 
 
-
-    // /** Get all categories */
-    // static async getAllCategories() {
-    //     const result = await db.query(`SELECT * FROM categories`);
-    //     return result.rows;
-    // }
-    //
-    // /** Get category by category name */
-    // static async getCategoryByName(categoryName) {
-    //     const result = await db.query(
-    //         `SELECT * FROM categories WHERE category_name = $1`, [categoryName]
-    //     );
-    //     return result.rows[0];
-    // }
 }
 
 module.exports = Product;

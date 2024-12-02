@@ -2,7 +2,7 @@
 .tags-carousel-container {
     width: 100%;
     overflow-x: auto; /* Enable horizontal scrolling */
-    padding: 10px; /* General padding */
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,18 +14,18 @@
 /* The carousel container that holds the tag buttons */
 .tag-buttons-carousel {
     display: flex;
-    flex-wrap: nowrap; /* Ensure everything stays in a single row */
+    flex-wrap: nowrap; /* Default: Everything stays in a single row */
     gap: 10px;
     white-space: nowrap; /* Prevent wrapping */
-    padding-left: 20px; /* Add more padding at the start to prevent the first button from clipping */
-    padding-right: 20px; /* Add padding at the end too */
+    padding-left: 20px;
+    padding-right: 20px;
     margin-left: auto;
     margin-right: auto;
 }
 
 /* Styling for each tag button */
 .tag-btn-carousel {
-    display: inline-flex; /* Align image and text horizontally */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 5px 10px;
@@ -33,24 +33,24 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    min-width: 100px; /* Adjust button width */
-    height: 40px; /* Adjust button height */
+    min-width: 100px;
+    height: 40px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     gap: 8px;
-    white-space: nowrap; /* Prevent text wrapping */
-    flex-shrink: 0; /* Ensure buttons do not shrink */
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* Hover effect for each tag button */
 .tag-btn-carousel:hover {
-    background-color: #DB7093; /* Background color on hover */
-    transform: translateY(-2px); /* Subtle hover effect */
+    background-color: #DB7093;
+    transform: translateY(-2px);
 }
 
 /* Styling for the tag images */
 .tag-image {
-    width: 20px; /* Small image size */
+    width: 20px;
     height: 20px;
     object-fit: cover;
     margin-right: 5px;
@@ -58,7 +58,7 @@
 
 /* Styling for the tag text */
 .tag-text {
-    font-size: 1em;  /* Smaller font size */
+    font-size: 1em;
     font-weight: bold;
     color: #333;
     text-align: left;
@@ -70,27 +70,27 @@
 }
 
 .tag-buttons-carousel {
-    -ms-overflow-style: none;  /* Hide scrollbar on Internet Explorer */
-    scrollbar-width: none;  /* Hide scrollbar on Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-/* Mobile-specific fixes */
+/* Mobile-specific fixes for two-line layout */
 @media (max-width: 768px) {
-    .tags-carousel-container {
-        padding: 10px; /* General padding to prevent clipping */
-    }
-
     .tag-buttons-carousel {
-        padding-left: 15px; /* Add padding at the start to prevent clipping */
-        padding-right: 15px; /* Add padding at the end */
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping to multiple rows */
+        white-space: normal; /* Allow normal text wrapping */
+        justify-content: center; /* Center the buttons */
+        gap: 10px;
     }
 
     .tag-btn-carousel {
-        min-width: 80px; /* Smaller button size for mobile */
-        height: 36px; /* Adjust button height for mobile */
+        flex: 1 1 calc(50% - 20px); /* Each button takes 50% width minus the gap */
+        min-width: 120px; /* Minimum button width for readability */
+        max-width: 150px; /* Optional: Limit max width */
+        height: auto; /* Allow height to adjust based on content */
     }
 }
-
 
 
 

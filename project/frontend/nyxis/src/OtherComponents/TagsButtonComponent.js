@@ -10,6 +10,8 @@ function TagsButtonComponent() {
     // Exclude these specific tags
     const excludedTags = ["CertClean", "No Talc", "USDA Organic", "No Talk", "Hypoallergenic", "EWG Verified", "EcoCert"];
 
+
+
     useEffect(() => {
         // Fetch tags from API when the component loads
         async function fetchTags() {

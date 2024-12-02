@@ -54,20 +54,7 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], t
         }
     }, 500);
 
-    // Handle changes in search input
-    const handleSearchChange = (e) => {
-        const query = e.target.value;
-        setSearchQuery(query);
-        debouncedSearch(query); // Trigger debounced search
-    };
 
-    // Handle search submit
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        onSearch(searchQuery);
-        setSearchQuery('');
-        setSearchResults([]); // Clear search results after submitting
-    };
 
     return (
         <Navbar expand="sm" className="navbar-custom">
@@ -120,10 +107,10 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], t
 
                     {/* User-specific Navigation Links */}
                     {currentUser ? (
-                        <NavItem className="nav-item">
-                            <NavLink to="/profile" className="nav-link">
-                                Profile of {currentUser.firstName || currentUser.username}
-                            </NavLink>
+                        <NavItem className="nav-item-username">
+
+                                 {currentUser.firstName || currentUser.username}
+
                         </NavItem>
                     ) : (
                         <>

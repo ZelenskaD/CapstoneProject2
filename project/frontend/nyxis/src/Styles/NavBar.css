@@ -100,7 +100,7 @@
     }
 
     .nav-items.open {
-        display: flex; /* Show nav when open */
+        display: inline-block; /* Show nav when open */
     }
 
     .nav-item {
@@ -115,13 +115,13 @@
 
 .badge-circle {
     position: absolute;
-    top: -10px;
+    top: -15px;
     right: -10px;
     background-color: #ea90e9; /* Pink color for the badge */
     color: white;
     border-radius: 50%; /* Circular shape */
     padding: 5px 10px; /* Adjust the padding to control the size */
-    font-size: 12px; /* Adjust the font size */
+    font-size: 10px; /* Adjust the font size */
     line-height: 1; /* Keep the text aligned inside */
     min-width: 20px; /* Ensure the badge is circular */
     text-align: center; /* Center the text inside */
@@ -129,45 +129,8 @@
 }
 
 
-
-/*.search-bar {*/
-/*    display: none;*/
-/*}*/
-
-/*.search-bar.show {*/
-/*    display: block;*/
-/*    position: absolute;*/
-/*    top: 60px;*/
-/*    left: 0;*/
-/*    right: 0;*/
-/*    background-color: #fff;*/
-/*    padding: 10px;*/
-/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
-/*}*/
-
-/*.search-input {*/
-/*    width: 80%;*/
-/*    padding: 8px;*/
-/*    border: 1px solid #ccc;*/
-/*    border-radius: 5px;*/
-/*    margin-right: 10px;*/
-/*}*/
-
-/*.search-submit-btn {*/
-/*    padding: 8px 15px;*/
-/*    background-color: #007bff;*/
-/*    color: white;*/
-/*    border: none;*/
-/*    border-radius: 5px;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*!* Ensure the search icon appears *!*/
-/*.search-icon-wrapper {*/
-/*    cursor: pointer;*/
-/*    font-size: 1.5em;*/
-/*    padding: 10px;*/
-/*}*/
-
+.nav-item-username{
+    color:#C71585;
+}
 
 

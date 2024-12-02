@@ -176,14 +176,6 @@ class NyxisApi {
     }
 
 
-
-
-
-    // static async login(loginData) {
-    //   const res = await axios.post(`${BASE_URL}/auth/token`, loginData);
-    //   return res.data.token;  // Assuming your backend returns a token
-    // }
-
     static async getStripeID(lineItems) {
         console.log("Getting Stripe ID");
         try {
@@ -209,28 +201,6 @@ class NyxisApi {
 
 
 
-    static async updateProfile(username, data) {
-        const res = await this.request(`${BASE_URL}/users/${username}`, data, "patch");
-        return res.data;
-    }
-
-
-    // Search for products by name (make it static)
-    static async searchProductsByName(query) {
-        try {
-            console.log(`Making request to search for products: ${query}`);
-            const res = await axios.get(`${API_URL}?name=${encodeURIComponent(query)}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-            });
-            return res.data;
-        } catch (error) {
-            console.error("Error searching for products:", error.response?.data || error.message);
-            throw error;  // Re-throw to handle it elsewhere in your code
-        }
-    }
 
 
 
