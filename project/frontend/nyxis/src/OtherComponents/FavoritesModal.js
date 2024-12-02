@@ -1,10 +1,12 @@
-import React from 'react';
+import React , { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import "../Styles/FavoritesModal.css";
+import UserContext from "../OtherComponents/UserContext";
 
 import defaultImage from './nyxisdefault.jpg'; // Ensure the path is correct
 
 const FavoritesModal = ({ favorites = [],toggleFavoritesOpen }) => {
+    const { currentUser } = useContext(UserContext);
 
     return (
         <div className="favorites-modal">

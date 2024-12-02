@@ -22,22 +22,101 @@ import ParentComponent from "./OtherComponents/ParentComponent";
 import SuccessPage from "./OtherComponents/SuccessPage";
 import CancelPage from "./OtherComponents/CancelPage";
 
-import FavoritesModal from "./OtherComponents/FavoritesModal"; // Import FavoritesModal
+import FavoritesModal from "./OtherComponents/FavoritesModal";
+
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("nyxis-token") || null);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    return storedUser ? JSON.parse(storedUser) : null;
+
+  });  const [isModalOpen, setModalOpen] = useState(false);
+
+
+  // const [cart, setCart] = useState(() => {
+  //   const savedCart = localStorage.getItem('cart');
+  //   return savedCart ? JSON.parse(savedCart) : [];
+  // });
+  //
+  // const [favorites, setFavorites] = useState(() => {
+  //   const savedFavorites = localStorage.getItem('favorites');
+  //   return savedFavorites ? JSON.parse(savedFavorites) : [];
+  // });
+
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    const savedCart = currentUser
+        ? JSON.parse(localStorage.getItem(`${currentUser.username}-cart`)) || []
+        : JSON.parse(sessionStorage.getItem("cart")) || [];
+    return savedCart;
   });
 
+
   const [favorites, setFavorites] = useState(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
+    const savedFavorites = currentUser
+        ? JSON.parse(localStorage.getItem(`${currentUser.username}-favorites`))
+        : JSON.parse(sessionStorage.getItem('favorites'));
+    return savedFavorites || [];
   });
+
+
+
+// Initialize cart and favorites based on user or session
+  useEffect(() => {
+    if (currentUser) {
+      const userCart = JSON.parse(localStorage.getItem(`${currentUser.username}-cart`)) || [];
+      const userFavorites = JSON.parse(localStorage.getItem(`${currentUser.username}-favorites`)) || [];
+      setCart(userCart);
+      setFavorites(userFavorites);
+      console.log("Cart and favorites restored after login:", { userCart, userFavorites });
+    } else {
+      const sessionCart = JSON.parse(sessionStorage.getItem("cart")) || [];
+      const sessionFavorites = JSON.parse(sessionStorage.getItem("favorites")) || [];
+      setCart(sessionCart);
+      setFavorites(sessionFavorites);
+    }
+  }, [currentUser]);
+
+
+
+  // Persist cart to localStorage or sessionStorage
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem(`${currentUser.username}-cart`, JSON.stringify(cart));
+      localStorage.setItem(`${currentUser.username}-favorites`, JSON.stringify(favorites));
+      console.log(`Persisted cart and favorites for ${currentUser.username}`);
+    }
+  }, [cart, favorites, currentUser]);
+
+
+  // Load user info when token changes
+  useEffect(() => {
+    async function loadUserInfo() {
+      if (token) {
+        try {
+          const { username } = jwtDecode(token); // Decode username from token
+          NyxisApi.token = token; // Set token for API requests
+          const user = await NyxisApi.getCurrentUser(username); // Fetch user details
+          setCurrentUser(user); // Update user state
+          localStorage.setItem("currentUser", JSON.stringify(user)); // Store user in localStorage
+
+          // Restore cart and favorites for logged-in user
+          const userCart = JSON.parse(localStorage.getItem(`${username}-cart`)) || [];
+          const userFavorites = JSON.parse(localStorage.getItem(`${username}-favorites`)) || [];
+          setCart(userCart);
+          setFavorites(userFavorites);
+          console.log("Cart and favorites restored after login:", { userCart, userFavorites });
+        } catch (err) {
+          console.error("Error loading user info:", err);
+          setCurrentUser(null);
+          localStorage.removeItem("currentUser");
+        }
+      }
+    }
+    loadUserInfo();
+  }, [token]);
+
+
 
   const [cartOpen, setCartOpen] = useState(false); // Cart modal state
   const [favoritesOpen, setFavoritesOpen] = useState(false); // Favorites modal state
@@ -48,19 +127,19 @@ function App() {
   const toggleFavoritesOpen = () => setFavoritesOpen(!favoritesOpen);
 
 
+
+
   // When the token changes, we reload user info from API
   useEffect(() => {
     async function loadUserInfo() {
       if (token) {
         try {
-          let { username } = jwtDecode(token);
-          console.log("Decoded username:", username);
-          NyxisApi.token = token;
-          let currentUser = await NyxisApi.getCurrentUser(username);
-          setCurrentUser(currentUser);
-          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+          let { username } = jwtDecode(token);  // Decode token to get username
+          NyxisApi.token = token;  // Set token for API requests
+          let currentUser = await NyxisApi.getCurrentUser(username);  // Fetch user details
+          setCurrentUser(currentUser);  // Set the user data
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));  // Store user in localStorage
         } catch (err) {
-          console.error("Error loading user info:", err);
           setCurrentUser(null);
           localStorage.removeItem("currentUser");
         }
@@ -74,11 +153,6 @@ function App() {
 
 
 
-  // useEffect(() => {
-  //   localStorage.setItem('favorites', JSON.stringify(favorites));
-  // }, [favorites]);
-
-  //
   const addToCart = (product, quantity) => {
     const updatedCart = [...cart];
     const existingItemIndex = updatedCart.findIndex(item => item.id === product.id);
@@ -90,25 +164,27 @@ function App() {
     }
 
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    if (currentUser) {
+      localStorage.setItem(`${currentUser.username}-cart`, JSON.stringify(updatedCart));
+    } else {
+      sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+    console.log("Updated cart:", updatedCart);
+
   };
 
-  const toggleFavorite = (product) => {
-    setFavorites(favorites => {
-      const isFavorite = favorites.some(fav => fav.id === product.id);
-      const updatedFavorites = isFavorite
-          ? favorites.filter(fav => fav.id !== product.id) // Remove from favorites
-          : [...favorites, product]; // Add to favorites
 
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Update localStorage
-      return updatedFavorites;
+
+  const toggleFavorite = (product) => {
+    setFavorites(prevFavorites => {
+      const isFavorite = prevFavorites.some(fav => fav.id === product.id);
+      return isFavorite
+          ? prevFavorites.filter(fav => fav.id !== product.id)
+          : [...prevFavorites, product];
     });
   };
 
 
-  const handleSearch = (query) => {
-    setSearchTerm(query);
-  };
 
 
   async function signup(signupData) {
@@ -126,25 +202,64 @@ function App() {
   }
 
 
-// Define the login function
+// // Define the login function
+//   async function login(loginData) {
+//     try {
+//       const token = await NyxisApi.login(loginData); // Fetch token from API
+//       console.log("Token received from backend:", token);
+//
+//       setToken(token);
+//
+//       localStorage.setItem("nyxis-token", token);
+//       return { success: true };
+//     } catch (errors) {
+//       console.error("Login failed", errors);
+//       return { success: false, errors };
+//     }
+//   }
+
   async function login(loginData) {
     try {
-      const token = await NyxisApi.login(loginData);
-      setToken(token);
-      localStorage.setItem("nyxis-token", token);
-      return { success: true };
-    } catch (errors) {
-      console.error("Login failed", errors);
-      return { success: false, errors };
+      const token = await NyxisApi.login(loginData); // Fetch token from API
+      if (token) {
+        setToken(token); // Update token state
+        localStorage.setItem("nyxis-token", token); // Save token to localStorage
+        console.log("Token set in localStorage:", token);
+        return { success: true, token };
+      } else {
+        console.error("No token received from backend");
+        return { success: false, errors: ["No token received"] };
+      }
+    } catch (err) {
+      console.error("Login failed", err);
+      return { success: false, errors: err };
     }
   }
+
+
+  // function logout() {
+  //   setToken(null);
+  //   setCurrentUser(null);
+  //   localStorage.removeItem("nyxis-token");
+  //   localStorage.removeItem("currentUser");
+  //
+  // }
 
   function logout() {
     setToken(null);
     setCurrentUser(null);
+    setCart([]); // Clear the cart state
+    setFavorites([]); // Clear the favorites state
     localStorage.removeItem("nyxis-token");
     localStorage.removeItem("currentUser");
+
+    // Persist user-specific cart and favorites in localStorage
+    console.log("User logged out, cart and favorites cleared from state but persisted in localStorage.");
   }
+
+
+
+
 
 
 
@@ -156,7 +271,6 @@ function App() {
                 logout={logout}
                 cart={cart}
                 toggleCartOpen={toggleCartOpen}
-                onSearch={handleSearch}
                 favorites={favorites}
                 toggleFavoritesOpen={toggleFavoritesOpen} // Pass toggleFavoritesOpen
             />
@@ -180,7 +294,7 @@ function App() {
                   <Route path="/success" element={<SuccessPage />} />
                   <Route path="/cancel" element={<CancelPage />} />
 
-                  <Route path="/makeup" element={<ProductsList favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} searchTerm={searchTerm} />} />
+                  <Route path="/makeup" element={<ProductsList favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart}  />} />
                   <Route path="/makeup/tag/:tag" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="tag" />} />
                   <Route path="/makeup/product_type/:product_type" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} isFavorite={false} addToCart={addToCart} filterType="product_type" />} />
                   <Route path="makeup/brands/:brand" element={<FilteredProducts favorites={favorites} toggleFavorite={toggleFavorite} addToCart={addToCart} isFavorite={false} filterType="brand" />} />

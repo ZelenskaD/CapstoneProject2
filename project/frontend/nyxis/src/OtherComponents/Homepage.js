@@ -1,6 +1,7 @@
 
 
 import BrandImages from "./BrandImages";
+import CategoryLinks from "./CategoryLinks";
 // import "./Styles/Homepage.css";
 
 function Homepage() {
@@ -13,6 +14,7 @@ function Homepage() {
         <div className="success-page">
             {/* Render the SuccessModal with show as a prop */}
             <BrandImages  />
+            <CategoryLinks />
 
         </div>
 

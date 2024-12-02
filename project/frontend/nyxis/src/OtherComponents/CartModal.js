@@ -2,9 +2,11 @@ import React from 'react';
 import "../Styles/CartModal.css";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UserContext from "../OtherComponents/UserContext";
+
 import defaultImage from './nyxisdefault.jpg';  // Adjust the path as needed
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { loadStripe } from '@stripe/stripe-js';
 import NyxisApi from "../api";
@@ -16,6 +18,10 @@ const stripePromise = loadStripe(stripeApiKey); // Use test public key
 const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
     const navigate = useNavigate(); // Initialize useNavigate
     const [orderPlaced, setOrderPlaced] = useState(false); // You can set this state based on order status
+    const { currentUser } = useContext(UserContext);
+
+
+
 
     const handleOrderSuccess = () => {
         console.log("Order successfully placed!");
@@ -31,31 +37,81 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
     };
 
 
+
     const calculateTotal = () => {
         return cart.reduce((acc, item) => acc + ((parseFloat(item.price) || 0) * item.quantity), 0).toFixed(2);
     };
 
+    // const handleRemoveItem = (productId) => {
+    //     const updatedCart = cart.filter(item => item.id !== productId);
+    //     setCart(updatedCart);
+    //     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+    // };
+
+
     const handleRemoveItem = (productId) => {
         const updatedCart = cart.filter(item => item.id !== productId);
         setCart(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+
+        // Save to storage based on user login
+        if (currentUser) {
+            localStorage.setItem(`${currentUser.username}-cart`, JSON.stringify(updatedCart));
+        } else {
+            sessionStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
     };
+
+
+    // const handleIncreaseQuantity = (productId) => {
+    //     const updatedCart = cart.map(item =>
+    //         item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+    //     );
+    //     setCart(updatedCart);
+    //     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+    // };
+    //
+
 
     const handleIncreaseQuantity = (productId) => {
         const updatedCart = cart.map(item =>
             item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
         );
         setCart(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+
+        // Save to storage based on user login
+        if (currentUser) {
+            localStorage.setItem(`${currentUser.username}-cart`, JSON.stringify(updatedCart));
+        } else {
+            sessionStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
     };
+
+
+    // const handleDecreaseQuantity = (productId) => {
+    //     const updatedCart = cart.map(item =>
+    //         item.id === productId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+    //     );
+    //     setCart(updatedCart);
+    //     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+    // };
+
 
     const handleDecreaseQuantity = (productId) => {
         const updatedCart = cart.map(item =>
             item.id === productId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
         );
         setCart(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+
+        // Save to storage based on user login
+        if (currentUser) {
+            localStorage.setItem(`${currentUser.username}-cart`, JSON.stringify(updatedCart));
+        } else {
+            sessionStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
     };
+
+
+
 
     const handleProductClick = (productId) => {
         navigate(`/products/${productId}`); // Navigate to product detail page

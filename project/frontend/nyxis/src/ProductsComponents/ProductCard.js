@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faHeart as faRegularHeart,
@@ -9,13 +9,38 @@ import {
 import { Link } from "react-router-dom"; // Use Link for navigation
 import "../Styles/ProductCard.css";
 import defaultImage from './nyxisdefault.jpg'; // Adjust the filename as needed
+import UserContext from "../OtherComponents/UserContext"; // Import UserContext for current user
 
-const ProductCard = ({ product, addToCart,  searchTerm }) => {
+
+const ProductCard = ({ product, addToCart, cart =[], searchTerm , currentUser}) => {
     const [quantity, setQuantity] = useState(0); // Initialize quantity state
+
     const [added, setAdded] = useState(false); // Track if product is added to the cart
     const [cracking, setCracking] = useState(false); // Track the cracking animation for favorites
     const [hovered, setHovered] = useState(false); // State to track hover
     const [inCart, setInCart] = useState(false); // Track if the product is in the cart
+    const [isInCart, setIsInCart] = useState(false);
+
+    useEffect(() => {
+        console.log("Cart in ProductCard:", cart);
+    }, [cart]);
+
+    useEffect(() => {
+        console.log("Cart in ProductCard:", cart);
+        const isProductInCart = cart.some((item) => item.id === product.id);
+        setIsInCart(isProductInCart);
+    }, [cart, product.id]);
+
+    useEffect(() => {
+        if (!Array.isArray(cart)) {
+            console.error("Invalid cart data:", cart);
+            return;
+        }
+
+        const isProductInCart = cart.some((item) => item.id === product.id);
+        setIsInCart(isProductInCart);
+    }, [cart, product.id]);
+
 
 
     // Fallback if the image fails to load
@@ -79,12 +104,13 @@ const ProductCard = ({ product, addToCart,  searchTerm }) => {
 
     // Add to Cart handler
     const handleAddToCart = () => {
-        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-        const updatedCart = [...cartItems, product];
-        localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
-        addToCart(product, 1); // Trigger parent logic if needed
-        setInCart(true); // Mark as in cart
+        if (!isInCart) {
+            addToCart(product, 1); // Add product to cart
+            setIsInCart(true); // Update local state
+        }
     };
+
+
 
 
 
@@ -170,12 +196,7 @@ const ProductCard = ({ product, addToCart,  searchTerm }) => {
                 </button>
             )}
 
-            {/*/!* Save/Unsave to Favorites button *!/*/}
-            {/*<button className="favorite-btn" onClick={handleToggleFavorite}>*/}
-            {/*    <FontAwesomeIcon*/}
-            {/*        icon={cracking ? faHeartCrack : isFavorite ? faSolidHeart : faRegularHeart}*/}
-            {/*    />*/}
-            {/*</button>*/}
+      
         </div>
     );
 };

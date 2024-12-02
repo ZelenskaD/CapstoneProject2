@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import '../Styles/ProductList.css'; // Add your custom CSS
 import NyxisApi from '../api'; // Assuming NyxisApi is used for API calls
+import UserContext from '../OtherComponents/UserContext'; // Import UserContext
 
 const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = null, filterValue = null, products: passedProducts = [], searchTerm, cart, handleRemoveFromCart}) => {
-    console.log("addToCart in ProductsList:", addToCart);  // Check if addToCart is being passed
+
+    const { currentUser } = useContext(UserContext); // Get currentUser from UserContext
 
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +58,8 @@ const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = 
         fetchProducts();
     }, [filterType, filterValue, passedProducts]);
 
+
+
     // Filter products based on the search term
     useEffect(() => {
         if (searchTerm) {
@@ -98,11 +102,12 @@ const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = 
                     <ProductCard
                         key={product.id}
                         product={product}
-                        addToCart={addToCart}  // Pass addToCart here
+                        addToCart={addToCart}  // Pass addToCart
                         toggleFavorite={toggleFavorite}
                         isFavorite={favorites.some(fav => fav.id === product.id)}  // Check if product is a favorite
                         searchTerm={searchTerm}
-                        cart={cart}
+                        currentUser={currentUser} // Pass current user context
+                        cart={cart }
                         handleRemoveItem={handleRemoveFromCart} // Optional
 
                     />

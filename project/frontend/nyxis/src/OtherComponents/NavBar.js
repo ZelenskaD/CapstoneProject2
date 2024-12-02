@@ -14,14 +14,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import "../Styles/NavBar.css";
 import NyxisApi from "../api";
-import { debounce } from 'lodash';
+
+
+
 
 function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], toggleFavoritesOpen }) {
-    const { currentUser } = useContext(UserContext);  // Get the current user from context
+    const { currentUser } = useContext(UserContext);
     const [isNavOpen, setIsNavOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([]);
     const [cartCount, setCartCount] = useState(0);
     const [loading, setLoading] = useState(false); // Add loading state
     const [error, setError] = useState(null);
@@ -37,22 +36,6 @@ function NavBar({ logout, cart = [], toggleCartOpen, onSearch, favorites = [], t
         setIsNavOpen(!isNavOpen);
     };
 
-    // Debounced search function
-    const debouncedSearch = debounce(async (query) => {
-        if (query.length > 2) {
-            setLoading(true);
-            try {
-                const results = await NyxisApi.searchProductsByName(query); // Make sure this API is filtering by query
-                setSearchResults(results);
-            } catch (error) {
-                setError(error.response?.data?.detail || 'Error searching for products');
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            setSearchResults([]); // Clear results if query is shorter than 3 chars
-        }
-    }, 500);
 
 
 
