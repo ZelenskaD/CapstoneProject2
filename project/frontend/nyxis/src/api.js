@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001/api";
-const BASE_URL =  "http://localhost:3001/api";
+const BASE_URL =  `${process.env.REACT_APP_BASE_URL_API}`;
 
-const API_URL = "https://nyxis-backend.surganov.dev/api/v1/products"
+const API_URL = `${process.env.REACT_APP_PRODUCT_URL_API}`
 /** API Class.
  *
  * Static class tying together methods used to get/send to the API.

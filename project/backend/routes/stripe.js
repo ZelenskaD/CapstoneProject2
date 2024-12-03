@@ -10,8 +10,8 @@ router.post('/create-checkout-session', async (req, res) => {
         payment_method_types: ['card'],
         line_items: req.body,
         mode: 'payment',
-        success_url: `http://localhost:3000/success`, // Your success URL after payment
-        cancel_url: `http://localhost:3000/cancel`, // Your cancel URL
+        success_url: `${process.env.NYXIS_URL}/success`, // Your success URL after payment
+        cancel_url: `${process.env.NYXIS_URL}/cancel`, // Your cancel URL
         // Optional: Collect the shipping address
         shipping_address_collection: {
             allowed_countries: ['US'], // Add allowed countries for shipping
