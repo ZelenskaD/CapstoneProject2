@@ -12,7 +12,6 @@ function Homepage() {
 
 
         <div className="success-page">
-            {/* Render the SuccessModal with show as a prop */}
             <BrandImages  />
             <CategoryLinks />
 

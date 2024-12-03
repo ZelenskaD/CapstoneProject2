@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import React, {  useEffect } from 'react';
+import { Modal,  ModalBody, ModalFooter, Button } from 'reactstrap';
 import "../Styles/SuccessModal.css"
 import { useNavigate } from 'react-router-dom';
 

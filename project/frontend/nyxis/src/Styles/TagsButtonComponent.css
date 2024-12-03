@@ -1,26 +1,27 @@
 /* General container for the tag buttons */
 .tags-carousel-container {
     width: 100%;
-    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-x: auto;
     padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    scrollbar-width: thin; /* Thin scrollbar for cleaner appearance */
+    scrollbar-width: thin;
 }
 
 /* The carousel container that holds the tag buttons */
 .tag-buttons-carousel {
     display: flex;
-    flex-wrap: nowrap; /* Default: Everything stays in a single row */
+    flex-wrap: nowrap;
     gap: 10px;
-    white-space: nowrap; /* Prevent wrapping */
+    white-space: nowrap;
     padding-left: 20px;
     padding-right: 20px;
     margin-left: auto;
     margin-right: auto;
+    overflow-x: scroll; /* Ensure scrolling works on all devices */
 }
 
 /* Styling for each tag button */
@@ -74,24 +75,50 @@
     scrollbar-width: none;
 }
 
-/* Mobile-specific fixes for two-line layout */
+/* Tablet-specific fixes */
+@media (max-width: 1024px) {
+    .tag-buttons-carousel {
+        gap: 8px;
+    }
+
+    .tag-btn-carousel {
+        min-width: 90px;
+        height: auto;
+        padding: 5px;
+    }
+
+    .tag-text {
+        font-size: 0.9em;
+    }
+}
+
+/* Mobile-specific fixes */
 @media (max-width: 768px) {
     .tag-buttons-carousel {
         display: flex;
-        flex-wrap: wrap; /* Allow wrapping to multiple rows */
-        white-space: normal; /* Allow normal text wrapping */
-        justify-content: center; /* Center the buttons */
+        flex-wrap: wrap;
+        white-space: normal;
+        justify-content: center;
         gap: 10px;
     }
 
     .tag-btn-carousel {
-        flex: 1 1 calc(50% - 20px); /* Each button takes 50% width minus the gap */
-        min-width: 120px; /* Minimum button width for readability */
-        max-width: 150px; /* Optional: Limit max width */
-        height: auto; /* Allow height to adjust based on content */
+        flex: 1 1 calc(50% - 20px);
+        min-width: 120px;
+        max-width: 150px;
+        height: auto;
     }
 }
 
+/* Extra-small screens */
+@media (max-width: 480px) {
+    .tag-btn-carousel {
+        flex: 1 1 calc(100% - 20px); /* Make buttons take full width */
+        margin-bottom: 10px;
+    }
 
-
+    .tag-text {
+        font-size: 0.8em;
+    }
+}
 

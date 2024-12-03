@@ -74,7 +74,7 @@ const ProductCard = ({ product, addToCart, cart =[], searchTerm , currentUser}) 
 
 
     useEffect(() => {
-        console.log("Cart in ProductCard:", cart);
+        // Perform side effects when `cart` changes
     }, [cart]);
 
 

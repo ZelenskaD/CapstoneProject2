@@ -15,13 +15,7 @@ const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = 
     const productsPerPage = 20;
     const maxPageButtons = 5;  // Number of page buttons to display at once
 
-    useEffect(() => {
-        console.log("Current User Cart:", cart);
-    }, [cart]);
 
-    useEffect(() => {
-        console.log("Cart in ProductsList:", cart);
-    }, [cart]);
 
     useEffect(() => {
         const fetchProducts = async () => {

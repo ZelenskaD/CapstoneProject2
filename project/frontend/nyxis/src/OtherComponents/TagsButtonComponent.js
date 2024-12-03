@@ -1,43 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NyxisApi from '../api';  // Import the method from api.js
-import '../Styles/TagsButtonComponent.css';  // Import your CSS
+import NyxisApi from '../api';
+import '../Styles/TagsButtonComponent.css';
 
 function TagsButtonComponent() {
     const [tags, setTags] = useState([]);
     const navigate = useNavigate();
 
-    // Exclude these specific tags
     const excludedTags = ["CertClean", "No Talc", "USDA Organic", "No Talk", "Hypoallergenic", "EWG Verified", "EcoCert"];
 
-
-
     useEffect(() => {
-        // Fetch tags from API when the component loads
         async function fetchTags() {
             try {
-                const uniqueTags = await NyxisApi.getTagNames(); // Call the method to fetch tags
-                const filteredTags = uniqueTags.filter(tag => !excludedTags.includes(tag)); // Exclude specific tags
-                setTags(filteredTags); // Set the filtered tags
+                const uniqueTags = await NyxisApi.getTagNames();
+                const filteredTags = uniqueTags.filter(tag => !excludedTags.includes(tag));
+                setTags(filteredTags);
             } catch (error) {
-                console.error("Error fetching tags:", error);
+                throw error;
             }
         }
-
         fetchTags();
     }, []);
 
     const handleTagClick = (tag) => {
-        navigate(`/makeup/tag/${tag}`);  // Correct route for tag
+        navigate(`/makeup/tag/${tag}`);
     };
 
-    const formatTagText = (tag) => {
-        // Special case for "Peanut Free Product"
-        if (tag.toLowerCase() === "peanut free product") {
-            return "Peanut Free";
-        }
-        return tag;
-    };
+    const formatTagText = (tag) => tag.toLowerCase() === "peanut free product" ? "Peanut Free" : tag;
 
     return (
         <div className="tags-carousel-container">
@@ -46,14 +35,14 @@ function TagsButtonComponent() {
                     <button
                         key={tag}
                         className="tag-btn-carousel"
-                        onClick={() => handleTagClick(tag)} // On button click, redirect to the tag page
+                        onClick={() => handleTagClick(tag)}
                     >
                         <img
-                            src={`/images/tags/${tag.toLowerCase().replace(/\s+/g, '-')}.png`}  // Dynamically load the tag image
+                            src={`/images/tags/${tag.toLowerCase().replace(/\s+/g, '-')}.png`}
                             alt={tag}
-                            className="tag-image"  // CSS class for styling the image
+                            className="tag-image"
                         />
-                        <span className="tag-text">{formatTagText(tag)}</span>  {/* Tag name */}
+                        <span className="tag-text">{formatTagText(tag)}</span>
                     </button>
                 ))}
             </div>
@@ -62,6 +51,7 @@ function TagsButtonComponent() {
 }
 
 export default TagsButtonComponent;
+
 
 
 

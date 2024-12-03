@@ -19,15 +19,12 @@ const Shop = () => {
         if (currentUser) {
             const userCart = JSON.parse(localStorage.getItem(`${currentUser.username}-cart`)) || [];
             setCart(userCart);
-            console.log(`Cart restored for ${currentUser.username}:`, userCart);
         } else {
             setCart([]);
         }
     }, [currentUser]);
 
-    useEffect(() => {
-        console.log("Cart in Parent:", cart);
-    }, [cart]);
+
 
 
     // Load user-specific cart and favorites from localStorage

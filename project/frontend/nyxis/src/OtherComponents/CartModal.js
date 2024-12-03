@@ -149,11 +149,10 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
         });
 
         if (error) {
-            console.error('Error redirecting to checkout:', error);
+                throw error;
         }
     };
 
-    console.log(cart)
 
     return (
         <div className="cart-modal">

@@ -16,7 +16,7 @@ const ModalDropdown = ({ title, fetchItems, routePrefix }) => {
                     .map((item) => item.replace(/_/g, ' '));
                 setItems(formattedItems);
             } catch (error) {
-                console.error('Error fetching items:', error);
+                    throw error;
             }
         };
 

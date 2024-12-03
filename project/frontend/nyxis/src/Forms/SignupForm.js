@@ -40,7 +40,6 @@ function SignupForm({ signup }) {
                 setFormErrors(result.errors);
             }
         } catch (err) {
-            console.error("Error during signup:", err);
             setFormErrors(["An unexpected error occurred. Please try again."]);
         }
     };

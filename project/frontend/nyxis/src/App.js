@@ -97,9 +97,7 @@ function App() {
           const userFavorites = JSON.parse(localStorage.getItem(`${username}-favorites`)) || [];
           setCart(userCart);
           setFavorites(userFavorites);
-          console.log("Cart and favorites restored after login:", { userCart, userFavorites });
         } catch (err) {
-          console.error("Error loading user info:", err);
           setCurrentUser(null);
           localStorage.removeItem("currentUser");
         }
@@ -187,7 +185,6 @@ function App() {
         return { success: true };
       }
     } catch (err) {
-      console.error("Signup failed", err);
       return { success: false, errors: err };
     }
   }
@@ -205,7 +202,6 @@ function App() {
         return { success: false, errors: ["No token received"] };
       }
     } catch (err) {
-      console.error("Login failed", err);
       return { success: false, errors: err };
     }
   }

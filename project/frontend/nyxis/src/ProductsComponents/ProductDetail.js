@@ -31,7 +31,6 @@ const ProductDetail = ({ addToCart, toggleFavorite, favorites }) => {
                     setProduct(null);
                 }
             } catch (error) {
-                console.error("Error fetching product details:", error);
                 setProduct(null);
             } finally {
                 setLoading(false);
