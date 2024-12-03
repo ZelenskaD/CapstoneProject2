@@ -23,11 +23,9 @@ function LoginForm({ login }) {
         try {
             let result = await login(formData); // Call login function
             if (result.success) {
-                console.log("Received token from backend:", result.token); // Log the token
 
                 navigate("/"); // Redirect to homepage on successful login
             } else {
-                console.error("Login errors:", result.errors);
 
                 setFormErrors(result.errors);
             }

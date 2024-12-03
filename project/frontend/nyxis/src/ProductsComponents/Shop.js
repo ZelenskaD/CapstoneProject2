@@ -1,21 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import NavBar from '../OtherComponents/NavBar';
 import ProductsPage from './ProductsPage';
 import FavoritesModal from '../OtherComponents/FavoritesModal';
+import UserContext from '../OtherComponents/UserContext';
+
+
 
 const Shop = () => {
-    const [favorites, setFavorites] = useState(() => {
-        const savedFavorites = localStorage.getItem('favorites');
-        return savedFavorites ? JSON.parse(savedFavorites) : [];
-    });
+    const { currentUser } = useContext(UserContext); // Access current user from context
 
-    const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
 
+
+    const [favorites, setFavorites] = useState([]);
+    const [cart, setCart] = useState([]);
     const [isFavoritesOpen, setIsFavoritesOpen] = useState(false); // Modal state
+
+    useEffect(() => {
+        if (currentUser) {
+            const userCart = JSON.parse(localStorage.getItem(`${currentUser.username}-cart`)) || [];
+            setCart(userCart);
+            console.log(`Cart restored for ${currentUser.username}:`, userCart);
+        } else {
+            setCart([]);
+        }
+    }, [currentUser]);
+
+    useEffect(() => {
+        console.log("Cart in Parent:", cart);
+    }, [cart]);
+
+
+    // Load user-specific cart and favorites from localStorage
+    useEffect(() => {
+        if (currentUser) {
+            const savedCart = localStorage.getItem(`${currentUser.username}-cart`);
+            const savedFavorites = localStorage.getItem(`${currentUser.username}-favorites`);
+            setCart(savedCart ? JSON.parse(savedCart) : []);
+            setFavorites(savedFavorites ? JSON.parse(savedFavorites) : []);
+        } else {
+            setCart([]);
+            setFavorites([]);
+        }
+    }, [currentUser]);
+
+    // Persist user-specific cart and favorites to localStorage
+    useEffect(() => {
+        if (currentUser) {
+            localStorage.setItem(`${currentUser.username}-cart`, JSON.stringify(cart));
+            localStorage.setItem(`${currentUser.username}-favorites`, JSON.stringify(favorites));
+        }
+    }, [cart, favorites, currentUser]);
+
 
     const toggleFavoritesOpen = () => {
         setIsFavoritesOpen(!isFavoritesOpen);
@@ -33,7 +68,6 @@ const Shop = () => {
         }
 
         setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
     };
 
 

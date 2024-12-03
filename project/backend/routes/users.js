@@ -55,14 +55,12 @@ router.post("/", async function (req, res, next) {
 router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         const { username } = req.params;
-        console.log("Backend received username:", username); // Debug log
         const user = await User.getUser(username);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
         res.json(user);
     } catch (err) {
-        console.error("Error in backend route:", err);
         next(err);
     }
 });

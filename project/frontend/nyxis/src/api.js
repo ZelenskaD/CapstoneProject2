@@ -119,14 +119,30 @@ class NyxisApi {
     static async getBrandNames() {
         try {
             const res = await axios.get(API_URL);
-            // Extract brands from the product list
-            let brands = res.data.map(product => product.brand).flat();
-            return [...new Set(brands)]; // Return unique brands
+
+            // Define the list of allowed brands
+            const allowedBrands = [
+                "colourpop", "boosh", "deciem", "alva", "glossier", "nyx", "fenty", "clinique",
+                "dior", "smashbox", "marcellee", "stila", "annabelle", "covergirl", "e.l.f.",
+                "maybellin", "almay", "milani", "l’oréal", "sante", "revlon", "pacifica", "mistura",
+                "zorah", "suncoat", "moov", "misa", "orly", "essie", "dalish"
+
+            ];
+
+            // Filter products to only include those from allowed brands
+            const brands = res.data
+                .map(product => product.brand)
+                .filter(brand => allowedBrands.includes(brand));
+
+            // Return unique allowed brands
+            return [...new Set(brands)];
         } catch (error) {
             console.error("Error fetching brands:", error);
             throw error;
         }
     }
+
+
 
 
     /** Get products by brand using an external API. */

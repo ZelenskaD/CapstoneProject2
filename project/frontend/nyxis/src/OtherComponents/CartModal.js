@@ -24,7 +24,6 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
 
 
     const handleOrderSuccess = () => {
-        console.log("Order successfully placed!");
         navigate('/success');  // Redirect to /success page
     };
 
@@ -42,12 +41,6 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
         return cart.reduce((acc, item) => acc + ((parseFloat(item.price) || 0) * item.quantity), 0).toFixed(2);
     };
 
-    // const handleRemoveItem = (productId) => {
-    //     const updatedCart = cart.filter(item => item.id !== productId);
-    //     setCart(updatedCart);
-    //     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
-    // };
-
 
     const handleRemoveItem = (productId) => {
         const updatedCart = cart.filter(item => item.id !== productId);
@@ -62,14 +55,6 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
     };
 
 
-    // const handleIncreaseQuantity = (productId) => {
-    //     const updatedCart = cart.map(item =>
-    //         item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-    //     );
-    //     setCart(updatedCart);
-    //     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
-    // };
-    //
 
 
     const handleIncreaseQuantity = (productId) => {
@@ -86,14 +71,6 @@ const CartModal = ({ cart = [], setCart, toggleCartOpen }) => {
         }
     };
 
-
-    // const handleDecreaseQuantity = (productId) => {
-    //     const updatedCart = cart.map(item =>
-    //         item.id === productId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-    //     );
-    //     setCart(updatedCart);
-    //     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
-    // };
 
 
     const handleDecreaseQuantity = (productId) => {

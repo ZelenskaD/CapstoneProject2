@@ -40,3 +40,263 @@
 
 # Database Schema
 ![Schema](resources/makeup_shop_schema.png)
+
+
+
+
+# How to Start and Run 
+
+## 1. Prerequisites
+Before running the application, ensure you have the following installed on your system:
+
+- Version 16 or higher is recommended.
+  [Download Node.js](https://nodejs.org/)
+- Git Version control system to clone the repository.
+ [Download Git] (https://git-scm.com/)
+- npm : Comes bundled with Node.js. If you prefer, you can use Yarn as an alternative package manager.
+- A code editor like WebStorm or VS Code.
+
+
+## 2. Dependencies
+The following dependencies are required to run the app. They will be installed automatically when you run npm install:
+
+- React: Framework for building user interfaces.
+- React-DOM: Library for DOM rendering in React.
+- Reactstrap: Bootstrap components for React.
+- Bootstrap: CSS framework for responsive design.
+- Font Awesome: Icon toolkit for React (@fortawesome packages).
+- Slick Carousel: Slider library for carousels (react-slick and slick-carousel).
+- Lodash: Utility library for JavaScript.
+- Axios: Library for HTTP requests (assumed based on the code).
+- Stripe.js: Library for Stripe payment integration.
+
+
+## 3.Browser Compatibility
+Ensure you use one of the following modern browsers:
+
+- Google Chrome (latest version)
+- Mozilla Firefox (latest version)
+- Microsoft Edge (latest version)
+
+# Setup Instructions
+
+   ##  1.Clone the Repository
+   1. Open your terminal or command prompt.
+   2. Clone the repository using the following command:
+
+    git clone https://github.com/ZelenskaD/CapstoneProject2
+  
+   3. Navigate to the project directory:
+
+    cd CapstoneProject2
+
+   
+
+
+  ## 2. Install Dependencies 
+
+   Install the required npm packages by running:
+
+    npm install
+
+  ## 3. Environment Variables
+   
+  1. Create a .env file in the root directory of the project.
+  2. Add the necessary environment variables:
+
+    REACT_APP_API_URL=http://localhost:5000/api
+    REACT_APP_STRIPE_PUBLIC_KEY=your_stripe_public_key_here
+
+
+# Running the Application
+
+## Start the Development Server
+
+1. **Start the Frontend Server**  
+   Navigate to the `CapstoneProject2/projects/frontend/nyxis` folder :
+
+
+  ```bash
+    cd nyxis
+   ```
+ 
+  - Install dependencies:
+
+   ```bash
+    npm install
+   ```
+    
+
+  - Start the frontend server:
+   
+    ```bash
+    npm start
+    ```
+(This will run Frontend server)
+
+
+
+
+## Start the Development Server
+
+2. **Start the Backend Server**  
+   Navigate to the `CapstoneProject2/projects/backend` folder :
+
+   ```bash
+    cd backend
+   ```
+
+  - Install dependencies:
+
+   ```bash
+    npm install
+   ```
+    
+   - Start the backend server:
+   
+   ```bash
+    npm start
+   ```
+
+(This will run Backend server)
+
+ 3. **Open in Browser**  
+   The application will be available at:
+
+       http://localhost:3000
+
+
+
+# Project Directory Structure
+
+
+```
+project/
+│
+├── backend/
+│   ├── helpers/
+│   │   ├── sql.js
+│   │   ├── tokens.js
+│   │
+│   ├── middleware/
+│   │   ├── auth.js
+│   │
+│   ├── models/
+│   │   ├── category.js
+│   │   ├── product.js
+│   │   ├── tag.js
+│   │   ├── user.js
+│   │
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── cart.js
+│   │   ├── categories.js
+│   │   ├── products.js
+│   │   ├── stripe.js
+│   │   ├── tags.js
+│   │   ├── users.js
+│   │
+│   ├── schemas/
+│   │   ├── categoryFilter.json
+│   │   ├── categoryNew.json
+│   │   ├── categorySearch.json
+│   │   ├── categoryUpdate.json
+│   │   ├── preferencesUpdate.json
+│   │   ├── productFilter.json
+│   │   ├── productNew.json
+│   │   ├── productSearch.json
+│   │   ├── productUpdate.json
+│   │   ├── tagFilter.json
+│   │   ├── tagNew.json
+│   │   ├── tagSearch.json
+│   │   ├── tagUpdate.json
+│   │   ├── userAuth.json
+│   │   ├── userNew.json
+│   │   ├── userRegister.json
+│   │   ├── userUpdate.json
+│   │
+│   ├── .env
+│   ├── .gitignore
+│   ├── api.js
+│   ├── app.js
+│   ├── config.js
+│   ├── db.js
+│   ├── db.json
+│   ├── expressError.js
+│   ├── nyxis.sql
+│   ├── nyxis-schema.sql
+│   ├── nyxis-seed.sql
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── server.js
+│   ├── testApi.js
+│
+├── frontend/
+│   ├── nyxis/
+│   │   ├── node_modules/
+│   │   ├── public/
+│   │   ├── src/
+│   │   │   ├── Banners/
+│   │   │   │   ├── BannerCarousel.js
+│   │   │   │
+│   │   │   ├── Forms/
+│   │   │   │   ├── LoginForm.js
+│   │   │   │   ├── SignupForm.js
+│   │   │   │
+│   │   │   ├── OtherComponents/
+│   │   │   │   ├── images/
+│   │   │   │   │   ├── BrandImages.js
+│   │   │   │   │   ├── default_picture_cart.png
+│   │   │   │   │
+│   │   │   │   ├── ButtonsComponent.js
+│   │   │   │   ├── CancelModal.js
+│   │   │   │   ├── CartModal.js
+│   │   │   │   ├── Footer.js
+│   │   │   │   ├── Homepage.js
+│   │   │   │   ├── ModalDropdown.js
+│   │   │   │   ├── NavBar.js
+│   │   │   │   ├── ParentComponent.js
+│   │   │   │   ├── ProblematicLinks.js
+│   │   │   │   ├── SuccessModal.js
+│   │   │   │   ├── TagsButtonComponent.js
+│   │   │   │   ├── UserContext.js
+│   │   │   │
+│   │   │   ├── ProductsComponents/
+│   │   │   │   ├── FilteredProducts.js
+│   │   │   │   ├── ProductCard.js
+│   │   │   │   ├── ProductDetail.js
+│   │   │   │   ├── ProductsList.js
+│   │   │   │   ├── Shop.js
+│   │   │   │
+│   │   │   ├── Styles/
+│   │   │   │   ├── BannerCarousel.css
+│   │   │   │   ├── BrandImages.css
+│   │   │   │   ├── ButtonsComponent.css
+│   │   │   │   ├── CartModal.css
+│   │   │   │   ├── CategoryLinks.css
+│   │   │   │   ├── Footer.css
+│   │   │   │   ├── Forms.css
+│   │   │   │   ├── ModalDropdown.css
+│   │   │   │   ├── NavBar.css
+│   │   │   │   ├── NotFound.css
+│   │   │   │   ├── ProductCard.css
+│   │   │   │   ├── ProductDetail.css
+│   │   │   │   ├── ProductList.css
+│   │   │   │   ├── SignupForm.css
+│   │   │   │   ├── SuccessModal.css
+│   │   │   │   ├── TagsButtonComponent.css
+│   │   │   │
+│   │   │   ├── App.js
+│   │   │   ├── App.css
+│   │   │   ├── api.js
+│   │   │   ├── index.js
+│   │   │   ├── reportWebVitals.js
+│   │   │   ├── setupTests.js
+│   │   │
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── README.md
+
+```
+
+

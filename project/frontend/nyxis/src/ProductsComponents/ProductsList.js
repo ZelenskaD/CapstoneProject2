@@ -2,11 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import '../Styles/ProductList.css'; // Add your custom CSS
 import NyxisApi from '../api'; // Assuming NyxisApi is used for API calls
-import UserContext from '../OtherComponents/UserContext'; // Import UserContext
 
-const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = null, filterValue = null, products: passedProducts = [], searchTerm, cart, handleRemoveFromCart}) => {
+const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = null, filterValue = null, products: passedProducts = [], searchTerm, cart, handleRemoveFromCart, currentUser}) => {
 
-    const { currentUser } = useContext(UserContext); // Get currentUser from UserContext
 
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +14,14 @@ const ProductsList = ({ addToCart, toggleFavorite, favorites = [], filterType = 
 
     const productsPerPage = 20;
     const maxPageButtons = 5;  // Number of page buttons to display at once
+
+    useEffect(() => {
+        console.log("Current User Cart:", cart);
+    }, [cart]);
+
+    useEffect(() => {
+        console.log("Cart in ProductsList:", cart);
+    }, [cart]);
 
     useEffect(() => {
         const fetchProducts = async () => {

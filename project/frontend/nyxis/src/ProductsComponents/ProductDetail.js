@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import NyxisApi from "../api";
 import "../Styles/ProductDetail.css";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeartCrack, faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
+import UserContext from "../OtherComponents/UserContext"; // Import UserContext for current user
+
 import defaultImage from './nyxisdefault.jpg';  // Adjust the path as needed
 
 
 const ProductDetail = ({ addToCart, toggleFavorite, favorites }) => {
     const { productId } = useParams();
+    const {currentUser} = useContext(UserContext);
     const [product, setProduct] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -38,12 +41,14 @@ const ProductDetail = ({ addToCart, toggleFavorite, favorites }) => {
         fetchProductDetails();
     }, [productId]);
 
-    // Check if the product is in the cart whenever the product changes
     useEffect(() => {
-        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-        const isInCart = cartItems.some((item) => item.id === product?.id);
-        setInCart(isInCart);
-    }, [product]);
+        if (product && currentUser) {
+            const cartItems = JSON.parse(localStorage.getItem(`${currentUser.username}-cart`)) || [];
+            const isInCart = cartItems.some((item) => item.id === product.id);
+            setInCart(isInCart);
+        }
+    }, [product, currentUser]);
+
 
     // Add to Cart handler
     const handleAddToCart = () => {

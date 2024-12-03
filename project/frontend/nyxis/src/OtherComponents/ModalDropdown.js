@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../Styles/ModalDropdown.css'; // Optional custom styles
-import NyxisApi from '../api'; // Make sure this import points to the correct path
-
 
 const ModalDropdown = ({ title, fetchItems, routePrefix }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,9 +10,13 @@ const ModalDropdown = ({ title, fetchItems, routePrefix }) => {
         const fetchData = async () => {
             try {
                 const uniqueItems = await fetchItems(); // Fetch items using the passed fetchItems function
-                setItems(uniqueItems);
+                // Replace underscores with spaces and filter out null/undefined items
+                const formattedItems = uniqueItems
+                    .filter((item) => item) // Filter out falsy values (null, undefined, empty strings)
+                    .map((item) => item.replace(/_/g, ' '));
+                setItems(formattedItems);
             } catch (error) {
-                console.error("Error fetching items:", error);
+                console.error('Error fetching items:', error);
             }
         };
 
@@ -32,9 +34,7 @@ const ModalDropdown = ({ title, fetchItems, routePrefix }) => {
             onMouseEnter={() => toggleModal(true)}
             onMouseLeave={() => toggleModal(false)}
         >
-            <button className="dropdown-button">
-                {title}
-            </button>
+            <button className="dropdown-button">{title}</button>
 
             {isModalOpen && (
                 <div className="modal-overlay">
@@ -44,7 +44,7 @@ const ModalDropdown = ({ title, fetchItems, routePrefix }) => {
                             {items.map((item) => (
                                 <NavLink
                                     key={item}
-                                    to={`${routePrefix}/${item}`}
+                                    to={`${routePrefix}/${item.replace(/ /g, '_')}`} // Convert spaces back to underscores for URLs
                                     className="item-link"
                                     onClick={() => toggleModal(false)}
                                 >
@@ -60,6 +60,7 @@ const ModalDropdown = ({ title, fetchItems, routePrefix }) => {
 };
 
 export default ModalDropdown;
+
 
 
 

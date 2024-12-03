@@ -1,0 +1,62 @@
+/* Full-page container */
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    background-color: rgba(255, 240, 245, 0.9); /* Light pastel pink background */
+    text-align: center;
+    font-family: 'Arial', sans-serif; /* Clean and modern font */
+}
+
+/* Content wrapper */
+.not-found-content {
+    background-color: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 400px;
+}
+
+/* 404 Title */
+.not-found-title {
+    font-size: 3rem;
+    color: #ff4081; /* Bright pink color */
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Description text */
+.not-found-text {
+    color: #555; /* Soft gray for text */
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+/* Button */
+.not-found-btn {
+    display: inline-block;
+    background-color: #ff80ab; /* Soft pink button background */
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.not-found-btn:hover {
+    background-color: #f50057; /* Darker pink on hover */
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .not-found-title {
+        font-size: 2rem;
+    }
+
+    .not-found-text {
+        font-size: 1rem;
+    }
+}

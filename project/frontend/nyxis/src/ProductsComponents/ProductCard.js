@@ -1,15 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faHeart as faRegularHeart,
-    faHeart as faSolidHeart,
-    faHeartCrack,
-    faCircleInfo,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { Link } from "react-router-dom"; // Use Link for navigation
 import "../Styles/ProductCard.css";
 import defaultImage from './nyxisdefault.jpg'; // Adjust the filename as needed
-import UserContext from "../OtherComponents/UserContext"; // Import UserContext for current user
 
 
 const ProductCard = ({ product, addToCart, cart =[], searchTerm , currentUser}) => {
@@ -18,28 +11,18 @@ const ProductCard = ({ product, addToCart, cart =[], searchTerm , currentUser}) 
     const [added, setAdded] = useState(false); // Track if product is added to the cart
     const [cracking, setCracking] = useState(false); // Track the cracking animation for favorites
     const [hovered, setHovered] = useState(false); // State to track hover
-    const [inCart, setInCart] = useState(false); // Track if the product is in the cart
+    // const [inCart, setInCart] = useState(false); // Track if the product is in the cart
     const [isInCart, setIsInCart] = useState(false);
 
+    // Sync `isInCart` state with the cart data
     useEffect(() => {
-        console.log("Cart in ProductCard:", cart);
-    }, [cart]);
-
-    useEffect(() => {
-        console.log("Cart in ProductCard:", cart);
-        const isProductInCart = cart.some((item) => item.id === product.id);
-        setIsInCart(isProductInCart);
-    }, [cart, product.id]);
-
-    useEffect(() => {
-        if (!Array.isArray(cart)) {
-            console.error("Invalid cart data:", cart);
-            return;
+        if (currentUser && Array.isArray(cart)) {
+            const isProductInCart = cart.some((item) => item.id === product.id);
+            setIsInCart(isProductInCart);
+        } else {
+            setIsInCart(false);
         }
-
-        const isProductInCart = cart.some((item) => item.id === product.id);
-        setIsInCart(isProductInCart);
-    }, [cart, product.id]);
+    }, [cart, currentUser, product.id]);
 
 
 
@@ -87,29 +70,21 @@ const ProductCard = ({ product, addToCart, cart =[], searchTerm , currentUser}) 
         }
     };
 
-    // Increase quantity
-    const increaseQuantity = () => setQuantity((prev) => prev + 1);
-
-    // Decrease quantity (make sure it doesn't go below 0)
-    const decreaseQuantity = () => quantity > 0 && setQuantity((prev) => prev - 1);
 
 
 
-    // Check if the product is in the cart on mount
     useEffect(() => {
-        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-        const isInCart = cartItems.some((item) => item.id === product.id);
-        setInCart(isInCart);
-    }, [product.id]);
+        console.log("Cart in ProductCard:", cart);
+    }, [cart]);
 
-    // Add to Cart handler
+
+// Handle Add to Cart
     const handleAddToCart = () => {
         if (!isInCart) {
-            addToCart(product, 1); // Add product to cart
-            setIsInCart(true); // Update local state
+            addToCart(product, 1); // Trigger parent function
+            setIsInCart(true);    // Update local state for instant feedback
         }
     };
-
 
 
 
@@ -180,23 +155,17 @@ const ProductCard = ({ product, addToCart, cart =[], searchTerm , currentUser}) 
 
 
             {/* Add to Cart or In Cart Button */}
-            {inCart ? (
-                <button
-                    className="in-cart-btn"
-                    disabled // Disable the button when the product is in the cart
-                >
+            {isInCart ? (
+                <button className="in-cart-btn" disabled>
                     In Cart
                 </button>
             ) : (
-                <button
-                    className="add-to-cart-btn"
-                    onClick={handleAddToCart}
-                >
+                <button className="add-to-cart-btn" onClick={handleAddToCart}>
                     Add to Cart
                 </button>
             )}
 
-      
+
         </div>
     );
 };

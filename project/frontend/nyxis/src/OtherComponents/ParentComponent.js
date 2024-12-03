@@ -7,7 +7,6 @@ const ParentComponent = ({ favorites, toggleFavorite, toggleFavoritesOpen}) => {
 
     // Navigate to product detail page
     const handleProductClick = (productId) => {
-        console.log("Navigating to product:", productId); // Debugging log
         navigate(`/products/${productId}`);
     };
 
