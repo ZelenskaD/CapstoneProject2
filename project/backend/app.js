@@ -40,9 +40,14 @@ app.use(function (req, res, next) {
     res.status(404).json({ error: { message: "Not Found", status: 404 } });
 });
 
+// app.use((err, req, res, next) => {
+//     console.error("Unhandled error:", err.stack || err.message || err);
+//     res.status(500).json({ error: "Internal server error" });
+// });
+
 app.use((err, req, res, next) => {
-    console.error("Unhandled error:", err.stack || err.message || err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(err.stack);
+    res.status(err.status || 500).json({ error: { message: err.message || "Internal Server Error" } });
 });
 
 

@@ -27,22 +27,42 @@ function SignupForm({ signup }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const errors = [];
+
+        // Validate password length
         if (formData.password.length < 5) {
-            setFormErrors(["Password must be at least 5 characters long"]);
+            errors.push("Password must be at least 5 characters long.");
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            errors.push("Please provide a valid email address (e.g., user@example.com).");
+        }
+
+        // If there are validation errors, display them and stop
+        if (errors.length > 0) {
+            setFormErrors(errors);
             return;
         }
 
         try {
-            const result = await signup(formData); // Signup call
+            // Make the signup API call
+            const result = await signup(formData);
+
             if (result.success) {
-                navigate("/");
+                setFormErrors([]);
+                navigate("/"); // Redirect to homepage on success
             } else {
+                // Display API errors (e.g., duplicate email or username)
                 setFormErrors(result.errors);
             }
         } catch (err) {
+            // Handle unexpected errors
             setFormErrors(["An unexpected error occurred. Please try again."]);
         }
     };
+
 
 
     return (

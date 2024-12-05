@@ -50,22 +50,17 @@ class User {
      **/
 
     static async register({ username, firstName, lastName, password, email, deliveryAddress }) {
-        console.time("Duplicate Check");
         const duplicateCheck = await db.query(
             `SELECT username FROM users WHERE username = $1`,
             [username]
         );
-        console.timeEnd("Duplicate Check");
-
         if (duplicateCheck.rows[0]) {
-            throw new BadRequestError(`Duplicate username: ${username}`);
+            throw new BadRequestError("Username is already taken");
         }
 
-        console.time("Password Hashing");
-        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
-        console.timeEnd("Password Hashing");
 
-        console.time("Database Insert");
+        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+
         const result = await db.query(
             `INSERT INTO users
            (username, password, first_name, last_name, email, delivery_address, is_admin)
@@ -73,10 +68,10 @@ class User {
            RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
             [username, hashedPassword, firstName, lastName, email, deliveryAddress, false]
         );
-        console.timeEnd("Database Insert");
 
         return result.rows[0];
     }
+
 
 
 
@@ -147,13 +142,11 @@ class User {
      **/
 
     static async getUser(username) {
-        console.log("Querying database for username:", username);
         const result = await db.query(`
         SELECT username, first_name, last_name, email, is_admin
         FROM users
         WHERE username = $1
     `, [username]);
-        console.log("Database result:", result.rows);
         if (!result.rows[0]) throw new NotFoundError(`No user: ${username}`);
         return result.rows[0];
     }

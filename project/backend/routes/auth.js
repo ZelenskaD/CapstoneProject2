@@ -11,36 +11,33 @@ const { createToken } = require("../helpers/tokens");
 const userAuthSchema = require("../schemas/userAuth.json");
 const userRegisterSchema = require("../schemas/userRegister.json");
 const { BadRequestError } = require("../expressError");
+const db = require("../db"); // Import the db object
+
 
 router.post("/register", async function (req, res, next) {
-    console.log("Register request received:", req.body);
     try {
-        console.time("Validation");
+        // Schema validation
         const validator = jsonschema.validate(req.body, userRegisterSchema);
-        console.timeEnd("Validation");
-
         if (!validator.valid) {
-            const errs = validator.errors.map(e => e.stack);
-            console.error("Validation errors:", errs);
-            throw new BadRequestError(errs);
+            const errors = validator.errors.map((e) => e.stack);
+            console.error("Schema validation errors:", errors);
+            throw new BadRequestError(errors);
         }
 
-        console.time("User Registration");
-        const newUser = await User.register({ ...req.body, isAdmin: false });
-        console.timeEnd("User Registration");
+        // Duplicate username check
+        const duplicateCheck = await db.query(
+            `SELECT username FROM users WHERE username = $1`,
+            [req.body.username]
+        );
+        if (duplicateCheck.rows[0]) {
+            throw new BadRequestError("Username is already taken");
+        }
 
-        res.locals.user = {
-            username: newUser.username,
-            isAdmin: newUser.isAdmin,
-        };
-
-        console.time("Token Creation");
+        // Register user
+        const newUser = await User.register(req.body);
         const token = createToken(newUser);
-        console.timeEnd("Token Creation");
-
         return res.status(201).json({ token });
     } catch (err) {
-        console.error("Error in /auth/register:", err);
         return next(err);
     }
 });

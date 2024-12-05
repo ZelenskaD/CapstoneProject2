@@ -23,7 +23,7 @@ import SuccessPage from "./OtherComponents/SuccessPage";
 import CancelPage from "./OtherComponents/CancelPage";
 
 import FavoritesModal from "./OtherComponents/FavoritesModal";
-
+import loadingGif from "./OtherComponents/images/loading.gif";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("nyxis-token") || null);
@@ -34,8 +34,9 @@ function App() {
   });
 
   const [isModalOpen, setModalOpen] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const [cart, setCart] = useState(() => {
     const savedCart = currentUser
@@ -177,31 +178,53 @@ function App() {
 
 
   async function signup(signupData) {
+    // setIsLoading(true); // Start loading
+
     try {
-      const result = await NyxisApi.signup(signupData);
+      const result = await NyxisApi.signup(signupData); // API call
       if (result.success) {
         setToken(result.token);
         localStorage.setItem("nyxis-token", result.token); // Save token to localStorage
-        return { success: true };
+        return { success: true }; // Return success immediately
+      } else {
+        // Ensure loading stops before returning errors
+        // setIsLoading(false);
+        return { success: false, errors: result.errors }; // Return errors from API
       }
     } catch (err) {
-      return { success: false, errors: err };
+      // Handle unexpected errors
+      // setIsLoading(false);
+      return { success: false, errors: ["An unexpected error occurred. Please try again."] };
+    // } finally {
+      // Ensure loading is always stopped
+      // setIsLoading(false);
     }
   }
 
 
 
+
+
   async function login(loginData) {
     try {
+      setIsLoading(true); // Start loading
+
       const token = await NyxisApi.login(loginData); // Fetch token from API
       if (token) {
         setToken(token); // Update token state
         localStorage.setItem("nyxis-token", token); // Save token to localStorage
+        setTimeout(() => {
+          setIsLoading(false); // End loading after 3 seconds
+        }, 1000);
         return { success: true, token };
       } else {
+        setIsLoading(false);
+
         return { success: false, errors: ["No token received"] };
       }
     } catch (err) {
+      setIsLoading(false);
+
       return { success: false, errors: err };
     }
   }
@@ -226,6 +249,27 @@ function App() {
 
   }
 
+  useEffect(() => {
+    // Simulate a 3-second delay
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Hide loading screen after 3 seconds
+    }, 3000);
+
+    return () => clearTimeout(timer); // Cleanup timer on component unmount
+  }, []);
+
+  if (isLoading) {
+    return (
+        <div className="loading-container">
+          <img
+              src={loadingGif}
+              alt="Loading..."
+              className="loading-image"
+          />
+          <h2>Loading, please wait...</h2>
+        </div>
+    );
+  }
 
 
 
@@ -255,7 +299,7 @@ function App() {
               <main className="main-content">
                 <Routes>
                   <Route path="/" element={<Homepage />} />
-                  <Route path="/signup" element={<SignupForm signup={signup} />} />
+                  <Route path="/signup" element={<SignupForm signup={signup} setLoading={setIsLoading}/>} />
                   <Route path="/login" element={<LoginForm login={login} />} />
                   <Route path="/success" element={<SuccessPage />} />
                   <Route path="/cancel" element={<CancelPage />} />

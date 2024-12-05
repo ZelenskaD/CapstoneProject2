@@ -153,16 +153,20 @@ class NyxisApi {
                 headers: { "Content-Type": "application/json" },
             });
 
-            // Store the token in localStorage
             if (res.data.token) {
                 localStorage.setItem("nyxis-token", res.data.token);
             }
 
-            return { success: true, token: res.data.token };
+            return { success: true, token: res.data.token }; // Success
         } catch (err) {
-            return { success: false, errors: err.response?.data?.error?.message || ["Unexpected error"] };
+            // Extract backend errors
+            const errorMessage = err.response?.data?.errors || ["Unexpected error occurred"];
+            console.error("API error response:", errorMessage); // Log the backend response
+            return { success: false, errors: Array.isArray(errorMessage) ? errorMessage : [errorMessage] };
         }
     }
+
+
 
     static async login(loginData) {
         try {
